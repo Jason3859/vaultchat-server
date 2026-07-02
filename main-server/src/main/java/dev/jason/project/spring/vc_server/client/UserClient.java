@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import dev.jason.project.spring.vc_server.core.Endpoints;
 import dev.jason.project.spring.vc_server.core.dto.UserDto;
 
-@FeignClient(name = "user-microservice", url = Endpoints.USER_SERVICE_URL)
+@FeignClient(name = "user-microservice", url = "${app.uri.user-microservice}")
 public interface UserClient {
 
 	@PostMapping(Endpoints.USER_REGISTER)

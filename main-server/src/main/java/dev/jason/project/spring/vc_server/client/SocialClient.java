@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import dev.jason.project.spring.vc_server.core.Endpoints;
 
-@FeignClient(name = "social-microservice", url = Endpoints.SOCIAL_SERVICE_URL)
+@FeignClient(name = "social-microservice", url = "${app.uri.social-microservice}")
 public interface SocialClient {
 
 	@PostMapping(Endpoints.SOCIAL_REGISTER)

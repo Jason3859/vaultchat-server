@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@FeignClient(name = "social-microservice", url = Endpoints.SOCIAL_SERVICE_URL, configuration = FeignConfig.class)
+@FeignClient(name = "social-microservice", url = "${app.uri.social-microservice}", configuration = FeignConfig.class)
 public interface SocialClient {
 
     @PatchMapping(Endpoints.SOCIAL_CONNECT)

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import dev.jason.project.spring.vc_server.core.Endpoints;
 import dev.jason.project.spring.vc_server.core.dto.DeviceDto;
 
-@FeignClient(name = "device-microservice", url = Endpoints.DEVICE_SERVICE_URL + "/" + Endpoints.DEVICE)
+@FeignClient(name = "device-microservice", url = "${app.uri.device-microservice}" + "/" + Endpoints.DEVICE)
 public interface DeviceClient {
 
 	@GetMapping(Endpoints.GET_DEVICES_BY_OWNER)

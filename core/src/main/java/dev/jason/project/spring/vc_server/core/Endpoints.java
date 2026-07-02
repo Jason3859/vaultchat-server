@@ -3,8 +3,6 @@ package dev.jason.project.spring.vc_server.core;
 public class Endpoints {
 
 	// device microservice
-	public static final int DEVICE_MICROSERVICE_PORT = 9000;
-	public static final String DEVICE_SERVICE_URL = "http://localhost:" + DEVICE_MICROSERVICE_PORT;
 	
 	public static final String DEVICE = "/device";
 	
@@ -20,8 +18,6 @@ public class Endpoints {
 	public static final String DEVICE_VERIFY = DEVICE + VERIFY;
 	
 	// messaging microservice
-	public static final int MESSAGING_MICROSERVICE_PORT = 9001;
-	public static final String MESSAGING_SERVICE_URL = "http://localhost:" + MESSAGING_MICROSERVICE_PORT;
 	
 	public static final String MESSAGING = "/messaging";
 	
@@ -35,8 +31,6 @@ public class Endpoints {
 	public static final String REGISTER = "/register";
 	
 	// social microservice
-	public static final int SOCIAL_MICROSERVICE_PORT = 9002;
-	public static final String SOCIAL_SERVICE_URL = "http://localhost:" + SOCIAL_MICROSERVICE_PORT;
 	
 	public static final String SOCIAL = "/social";
 	
@@ -55,8 +49,6 @@ public class Endpoints {
 	public static final String SOCIAL_IS_USER_BLOCKED = SOCIAL + IS_USER_BLOCKED;
 	
 	// user microservice
-	public static final int USER_MICROSERVICE_PORT = 9003;
-	public static final String USER_SERVICE_URL = "http://localhost:" + USER_MICROSERVICE_PORT;
 	
 	public static final String USER = "/user";
 	

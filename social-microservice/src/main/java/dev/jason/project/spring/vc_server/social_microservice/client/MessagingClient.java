@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import dev.jason.project.spring.vc_server.core.Endpoints;
 
-@FeignClient(name = "messaging-microservice", url = Endpoints.MESSAGING_SERVICE_URL + "/" + Endpoints.MESSAGING)
+@FeignClient(name = "messaging-microservice", url = "${app.uri.messaging-microservice}" + "/" + Endpoints.MESSAGING)
 public interface MessagingClient {
 
 	@PostMapping

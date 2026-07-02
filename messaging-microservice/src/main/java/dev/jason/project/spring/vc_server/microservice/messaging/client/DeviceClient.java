@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
-@FeignClient(name = "device-microservice", url = Endpoints.DEVICE_SERVICE_URL)
+@FeignClient(name = "device-microservice", url = "${app.uri.device-microservice}")
 public interface DeviceClient {
 
     @GetMapping(Endpoints.DEVICE_GET_DEVICES_BY_OWNER)

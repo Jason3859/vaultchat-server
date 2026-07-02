@@ -8,3 +8,10 @@ spring:
 
 server:
     port: 9002
+
+app:
+    uri:
+        device-microservice: http://localhost:9000
+        user-microservice: http://localhost:9003
+        social-microservice: http://localhost:9002
+        messaging-microservice: http://localhosr:9001

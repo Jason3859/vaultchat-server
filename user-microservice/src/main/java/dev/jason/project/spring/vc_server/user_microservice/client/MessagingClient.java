@@ -9,7 +9,7 @@ import dev.jason.project.spring.vc_server.core.Endpoints;
 import dev.jason.project.spring.vc_server.core.dto.DeviceDto;
 import dev.jason.project.spring.vc_server.core.model.User;
 
-@FeignClient(name = "messaging-microservice", url = Endpoints.MESSAGING_SERVICE_URL)
+@FeignClient(name = "messaging-microservice", url = "${app.uri.messaging-microservice}")
 public interface MessagingClient {
 
     @PostMapping(Endpoints.MESSAGING_NOTIFY_STATUS)

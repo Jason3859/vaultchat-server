@@ -6,7 +6,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@FeignClient(name = "user-microservice", url = Endpoints.USER_SERVICE_URL)
+@FeignClient(name = "user-microservice", url = "${app.uri.user-microservice}")
 public interface UserClient {
 
     @GetMapping(Endpoints.USER_GET_USER_BY_UID)
