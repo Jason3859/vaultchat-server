@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping(Endpoints.DEVICE)
@@ -18,6 +20,12 @@ public class DeviceController {
 	
 	@Autowired
 	private DeviceService deviceService;
+
+    @GetMapping
+    public String home() {
+        return "Hello, World!";
+    }
+    
 
 	@PostMapping(Endpoints.ADD)
 	public ResponseEntity<?> addDevice(@RequestBody DeviceDto device) {

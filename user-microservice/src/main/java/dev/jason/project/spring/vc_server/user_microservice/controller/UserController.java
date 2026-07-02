@@ -29,6 +29,11 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 
+    @GetMapping
+    public String home() {
+        return "Hello, World!";
+    }
+
 	@PostMapping(Endpoints.REGISTER)
 	public ResponseEntity<?> register(@RequestBody UserDto userDto) {
 		userService.addUser(userDto.asUser());

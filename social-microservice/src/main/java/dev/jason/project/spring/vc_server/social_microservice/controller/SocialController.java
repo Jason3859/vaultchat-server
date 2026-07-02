@@ -28,6 +28,11 @@ public class SocialController {
 
 	@Autowired
 	private UserClient userClient;
+
+    @GetMapping
+    public String home() {
+        return "Hello, World!";
+    }
 	
 	@PostMapping(Endpoints.REGISTER)
 	public void register(@RequestParam String uid) {
