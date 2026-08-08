@@ -17,6 +17,7 @@ spring-boot-starter-data-mongodb = { module = "org.springframework.boot:spring-b
 spring-boot-starter-gateway-server-webmvc = { module = "org.springframework.cloud:spring-cloud-starter-gateway-server-webmvc" }
 spring-boot-starter-webmvc-test = { module = "org.springframework.boot:spring-boot-starter-webmvc-test" }
 spring-boot-starter-data-mongodb-test = { module = "org.springframework.boot:spring-boot-starter-data-mongodb-test" }
+spring-boot-starter-webflux = { module = "org.springframework.boot:spring-boot-starter-webflux" }
 
 firebase-admin = { module = "com.google.firebase:firebase-admin", version.ref = "firebase" }
 
@@ -28,5 +29,6 @@ junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher
 
 [plugins]
 java = { id = "java" }
+java-library = { id = "java-library" }
 spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }
 spring-boot-dependency-management = { id = "io.spring.dependency-management", version.ref = "spring-boot-dependency-management" }

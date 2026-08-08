@@ -13,14 +13,16 @@ repositories {
 dependencies {
 	
 	implementation projects.core
-	
+
+	implementation projects.microservices.deviceMicroservice
+	implementation projects.microservices.messagingMicroservice
+	implementation projects.microservices.socialMicroservice
+	implementation projects.microservices.userMicroservice
+
 	implementation platform(libs.spring.cloud.dependencies)
 	implementation libs.spring.boot.starter.gateway.server.webmvc
-	implementation libs.spring.cloud.starter.openfeign
-	implementation libs.feign.okhttp
-	
+
 	implementation libs.spring.boot.starter.data.mongodb
-	
 	implementation libs.spring.boot.starter.webmvc
 
 	testImplementation libs.spring.boot.starter.webmvc.test

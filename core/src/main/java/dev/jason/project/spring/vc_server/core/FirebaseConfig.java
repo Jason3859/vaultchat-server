@@ -1,16 +1,15 @@
 package dev.jason.project.spring.vc_server.core;
 
+import com.google.auth.oauth2.GoogleCredentials;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Objects;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.auth.oauth2.GoogleCredentials;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.FirebaseOptions;
 
 public class FirebaseConfig {
 	
@@ -29,7 +28,8 @@ public class FirebaseConfig {
         	
         	logger.info("`{}` file found. Initializing Firebase app now", ADMIN_SDK_FILE_NAME);
         	
-        	stream = s;        	
+        	stream = s;
+			s.close();
         } catch (NullPointerException e) {
         	
         	logger.info("`{}` file not found. trying to fetch from env", ADMIN_SDK_FILE_NAME);
@@ -53,5 +53,7 @@ public class FirebaseConfig {
         FirebaseApp.initializeApp(options);
 
         logger.info("Initialized Firebase app");
+
+		stream.close();
     }
 }

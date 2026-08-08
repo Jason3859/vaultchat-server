@@ -1,10 +1,27 @@
+pluginManagement {
+    plugins {
+        id 'org.jetbrains.kotlin.jvm' version '2.3.21'
+    }
+}
+plugins {
+    id 'org.gradle.toolchains.foojay-resolver-convention' version '1.0.0'
+}
+
+dependencyResolutionManagement {
+    repositories {
+        mavenCentral()
+    }
+}
+
 rootProject.name = 'vc_server'
 
 enableFeaturePreview 'TYPESAFE_PROJECT_ACCESSORS'
 
-include ':core'
-include ':messaging-microservice'
-include ':user-microservice'
-include ':device-microservice'
-include ':social-microservice'
 include ':main-server'
+include ':core'
+
+include ':microservices'
+include ':microservices:messaging-microservice'
+include ':microservices:user-microservice'
+include ':microservices:device-microservice'
+include ':microservices:social-microservice'

@@ -1,12 +1,11 @@
 package dev.jason.project.spring.vc_server.core.exception;
 
+import dev.jason.project.spring.vc_server.core.model.ErrorResponse;
+import dev.jason.project.spring.vc_server.core.model.Result;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
-import dev.jason.project.spring.vc_server.core.model.ErrorResponse;
-import dev.jason.project.spring.vc_server.core.model.Result;
 
 @RestControllerAdvice
 public class VcExceptionHandler {

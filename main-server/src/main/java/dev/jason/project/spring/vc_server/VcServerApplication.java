@@ -1,16 +1,33 @@
 package dev.jason.project.spring.vc_server;
 
+import dev.jason.project.spring.vc_server.core.FirebaseConfig;
+import dev.jason.project.spring.vc_server.core.exception.VcExceptionHandler;
+import dev.jason.project.spring.vc_server.device_microservice.service.DeviceService;
+import dev.jason.project.spring.vc_server.microservice.messaging.service.MessagingService;
+import dev.jason.project.spring.vc_server.social_microservice.service.SocialService;
+import dev.jason.project.spring.vc_server.user_microservice.service.UserService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.context.annotation.Import;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
+import java.io.IOException;
+
 @SpringBootApplication
-@EnableFeignClients
 @EnableScheduling
+@EnableMongoRepositories
+@Import({
+    VcExceptionHandler.class,
+    UserService.class,
+    DeviceService.class,
+    MessagingService.class,
+    SocialService.class
+})
 public class VcServerApplication {
 
-    static void main(String[] args) {
+    static void main(String[] args) throws IOException {
         SpringApplication.run(VcServerApplication.class, args);
+        FirebaseConfig.initFirebase();
     }
 }
