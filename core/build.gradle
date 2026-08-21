@@ -18,7 +18,6 @@ dependencies {
     
     implementation libs.firebase.admin
 
-    api libs.spring.boot.starter.webflux
     implementation libs.spring.boot.starter.webmvc
 
     testImplementation platform(libs.junit.bom)

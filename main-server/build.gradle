@@ -19,9 +19,6 @@ dependencies {
 	implementation projects.microservices.socialMicroservice
 	implementation projects.microservices.userMicroservice
 
-	implementation platform(libs.spring.cloud.dependencies)
-	implementation libs.spring.boot.starter.gateway.server.webmvc
-
 	implementation libs.spring.boot.starter.data.mongodb
 	implementation libs.spring.boot.starter.webmvc
 

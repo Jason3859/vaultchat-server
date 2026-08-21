@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Objects;
 
 @RestController
 @RequestMapping(Endpoints.USER)
@@ -57,9 +56,9 @@ public class UserController {
 		
 		userService.getUserByUid(fromUid); // for verification that user exists
 		
-		List<UserDto> requiredUsers = userService.getAllUsersByDisplayName(searchQuery).stream()
+		List<UserDto> requiredUsers = userService.searchUsers(fromUid, searchQuery)
+			.stream()
 			.map(UserDto::fromUser)
-			.filter(user -> !Objects.equals(user.uid(), fromUid))
 			.toList();
 		
 		return new ResponseEntity<>(requiredUsers, HttpStatus.OK);

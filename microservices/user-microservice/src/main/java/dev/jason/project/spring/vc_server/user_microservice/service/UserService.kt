@@ -4,10 +4,7 @@ import dev.jason.project.spring.vc_server.core.exception.VcException.UserExcepti
 import dev.jason.project.spring.vc_server.core.exception.VcException.UserException.UserNotFoundException
 import dev.jason.project.spring.vc_server.core.model.Device
 import dev.jason.project.spring.vc_server.core.model.User
-import dev.jason.project.spring.vc_server.core.service.DeleteDeviceService
-import dev.jason.project.spring.vc_server.core.service.GetUserService
-import dev.jason.project.spring.vc_server.core.service.InformUserStatusUpdateService
-import dev.jason.project.spring.vc_server.core.service.SendLogoutRequestService
+import dev.jason.project.spring.vc_server.core.service.*
 import dev.jason.project.spring.vc_server.user_microservice.model.UserEntity
 import dev.jason.project.spring.vc_server.user_microservice.repo.UserRepository
 import org.springframework.stereotype.Service
@@ -17,7 +14,8 @@ class UserService(
     private val repository: UserRepository,
     private val sendLogoutRequestService: SendLogoutRequestService,
     private val informUserStatusUpdateService: InformUserStatusUpdateService,
-    private val deleteDeviceService: DeleteDeviceService
+    private val deleteDeviceService: DeleteDeviceService,
+    private val checkIfUserIsBlockedService: CheckIfUserIsBlockedService
 ) : GetUserService by GetUserServiceImpl(repository) {
 
     fun addUser(user: User) {
@@ -56,7 +54,7 @@ class UserService(
         informUserStatusUpdateService.sendStatusUpdate(uid, User.Status.Online)
     }
 
-    fun getAllUsersByDisplayName(query: String?): MutableList<User?> {
+    fun getAllUsersByDisplayName(query: String?): List<User> {
         return repository.findByDisplayNameContainingIgnoreCase(query).stream()
             .map { obj: UserEntity? -> obj!!.asUser() }
             .toList()
@@ -65,5 +63,11 @@ class UserService(
     fun logout(device: Device?, clearMessages: Boolean) {
         sendLogoutRequestService.sendLogoutRequest(device, clearMessages)
         deleteDeviceService.deleteDevice(device)
+    }
+
+    fun searchUsers(fromUid: String, searchQuery: String): List<User> {
+        return getAllUsersByDisplayName(searchQuery)
+            .filter { it.uid != fromUid }
+            .filter { !checkIfUserIsBlockedService.isUserBlocked(fromUid, it.uid) }
     }
 }

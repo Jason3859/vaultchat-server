@@ -14,9 +14,6 @@ repositories {
 dependencies {
     implementation projects.core
 
-    implementation platform(libs.spring.cloud.dependencies)
-    implementation libs.spring.cloud.starter.openfeign
-
     implementation libs.spring.boot.starter.webmvc
     implementation libs.spring.boot.starter.data.mongodb
 

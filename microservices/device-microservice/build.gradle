@@ -17,9 +17,6 @@ dependencies {
     implementation libs.spring.boot.starter.data.mongodb
     implementation libs.spring.boot.starter.webmvc
     
-    implementation platform(libs.spring.cloud.dependencies)
-	implementation libs.spring.cloud.starter.openfeign
-    
     compileOnly libs.lombok
     annotationProcessor libs.lombok
     

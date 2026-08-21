@@ -21,7 +21,7 @@ class SocialService(
     ConnectionsService by ConnectionsServiceImpl(repository),
     MessageQueueService by MessageQueueServiceImpl(repository) {
 
-    fun getBlockedUsers(uid: String?): MutableList<User?> {
+    fun getBlockedUsers(uid: String?): List<User> {
         val entity = repository.findByUserId(uid)
 
         if (entity.isEmpty) throw UserNotFoundException()
