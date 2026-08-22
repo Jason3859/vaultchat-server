@@ -3,7 +3,7 @@ package dev.jason.project.spring.vc_server.controller;
 import dev.jason.project.spring.vc_server.core.Endpoints;
 import dev.jason.project.spring.vc_server.core.dto.DeviceDto;
 import dev.jason.project.spring.vc_server.core.model.Device;
-import dev.jason.project.spring.vc_server.device_microservice.service.DeviceService;
+import dev.jason.project.spring.vc_server.core.service.DeviceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

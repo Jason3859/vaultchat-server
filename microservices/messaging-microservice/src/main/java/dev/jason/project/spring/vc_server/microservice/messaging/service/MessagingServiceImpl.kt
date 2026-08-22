@@ -8,17 +8,18 @@ import dev.jason.project.spring.vc_server.microservice.messaging.repo.messaging.
 import org.springframework.stereotype.Service
 
 @Service
-class MessagingService(
+class MessagingServiceImpl(
     private val messagingRepository: MessagingRepository,
     private val getUserService: GetUserService,
     private val checkIfUserIsBlockedService: CheckIfUserIsBlockedService,
     private val connectionsService: ConnectionsService,
     private val getDevicesService: GetDevicesService,
     private val messageQueueService: MessageQueueService
-) : SendLogoutRequestService by SendLogoutRequestServiceImpl(messagingRepository),
+) : MessagingService,
+	SendLogoutRequestService by SendLogoutRequestServiceImpl(messagingRepository),
     InformUserStatusUpdateService by InformUserStatusUpdateServiceImpl(messagingRepository, connectionsService, getDevicesService) {
 
-    fun sendMessage(message: Message) {
+    override fun sendMessage(message: Message) {
         if (message.text.isBlank()) {
             throw MessageTextBlankException()
         }

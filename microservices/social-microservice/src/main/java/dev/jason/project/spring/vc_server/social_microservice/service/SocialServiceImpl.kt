@@ -4,24 +4,21 @@ import dev.jason.project.spring.vc_server.core.exception.VcException.SocialExcep
 import dev.jason.project.spring.vc_server.core.exception.VcException.UserException.UserAlreadyExistsException
 import dev.jason.project.spring.vc_server.core.exception.VcException.UserException.UserNotFoundException
 import dev.jason.project.spring.vc_server.core.model.User
-import dev.jason.project.spring.vc_server.core.service.CheckIfUserIsBlockedService
-import dev.jason.project.spring.vc_server.core.service.ConnectionsService
-import dev.jason.project.spring.vc_server.core.service.GetUserService
-import dev.jason.project.spring.vc_server.core.service.MessageQueueService
+import dev.jason.project.spring.vc_server.core.service.*
 import dev.jason.project.spring.vc_server.social_microservice.model.SocialEntity
 import dev.jason.project.spring.vc_server.social_microservice.repo.SocialRepository
 import org.springframework.stereotype.Service
 
 @Service
-class SocialService(
+class SocialServiceImpl(
     private val repository: SocialRepository,
     private val getUserService: GetUserService
-) :
+) :	SocialService,
     CheckIfUserIsBlockedService by CheckIfUserIsBlockedServiceImpl(repository),
     ConnectionsService by ConnectionsServiceImpl(repository),
     MessageQueueService by MessageQueueServiceImpl(repository) {
 
-    fun getBlockedUsers(uid: String?): List<User> {
+    override fun getBlockedUsers(uid: String): List<User> {
         val entity = repository.findByUserId(uid)
 
         if (entity.isEmpty) throw UserNotFoundException()
@@ -29,11 +26,11 @@ class SocialService(
         return entity.get()
             .blocklist
             .stream()
-            .map { uid: String? -> getUserService.getUserByUid(uid) }
+            .map { uid -> getUserService.getUserByUid(uid) }
             .toList()
     }
 
-    fun registerNewUser(uid: String?) {
+    override fun registerNewUser(uid: String) {
         if (repository.findByUserId(uid).isPresent) {
             throw UserAlreadyExistsException()
         }
@@ -42,7 +39,7 @@ class SocialService(
         repository.save(entity)
     }
 
-    fun block(uid1: String?, uid2: String?) {
+    override fun block(uid1: String, uid2: String) {
         if (uid1 == uid2) {
             throw SelfBlockException()
         }
@@ -60,7 +57,7 @@ class SocialService(
         repository.save(entity1)
     }
 
-    fun unblock(uid1: String?, uid2: String?) {
+    override fun unblock(uid1: String, uid2: String) {
         if (uid1 == uid2) {
             throw SelfUnblockException()
         }
@@ -78,7 +75,7 @@ class SocialService(
         throw UserNotBlockedException()
     }
 
-    fun getSocialEntityByUid(uid: String?): SocialEntity {
+    fun getSocialEntityByUid(uid: String): SocialEntity {
         val entity = repository.findByUserId(uid)
 
         if (entity.isEmpty) {
