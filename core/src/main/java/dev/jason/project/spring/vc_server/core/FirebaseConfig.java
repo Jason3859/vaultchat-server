@@ -3,14 +3,19 @@ package dev.jason.project.spring.vc_server.core;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
+import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Objects;
 
+@Configuration
+@Profile("!no-firebase")
 public class FirebaseConfig {
 	
 	private static final Logger logger = LoggerFactory.getLogger(FirebaseConfig.class);
@@ -18,6 +23,7 @@ public class FirebaseConfig {
 	private static final String ADMIN_SDK_FILE_NAME = "vaultchatapp.json";
 	private static final String ADMIN_SDK_ENV_KEY = "FIREBASE_ADMIN_SDK_FILE_CONTENT";
 
+	@PostConstruct
 	public static void initFirebase() throws IOException {
         InputStream stream;
         

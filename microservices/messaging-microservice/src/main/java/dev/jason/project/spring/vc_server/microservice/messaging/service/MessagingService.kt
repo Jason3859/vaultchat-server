@@ -2,12 +2,10 @@ package dev.jason.project.spring.vc_server.microservice.messaging.service
 
 import dev.jason.project.spring.vc_server.core.exception.VcException.MessagingException.MessageTextBlankException
 import dev.jason.project.spring.vc_server.core.exception.VcException.SocialException.BlockedByUserException
-import dev.jason.project.spring.vc_server.core.model.Device
 import dev.jason.project.spring.vc_server.core.model.Message
 import dev.jason.project.spring.vc_server.core.service.*
 import dev.jason.project.spring.vc_server.microservice.messaging.repo.messaging.MessagingRepository
 import org.springframework.stereotype.Service
-import java.util.function.Consumer
 
 @Service
 class MessagingService(
@@ -34,15 +32,16 @@ class MessagingService(
 
         connectionsService.connect(from.uid, to.uid)
 
-        val devices = getDevicesService.getDevicesByOwnerUid(to.uid)
+        val devicesOfFirstUser = getDevicesService.getDevicesByOwnerUid(from.uid)
+        val devicesOfSecondUser = getDevicesService.getDevicesByOwnerUid(to.uid)
 
-        if (devices.isEmpty()) {
+        if (devicesOfSecondUser.isEmpty()) {
             messageQueueService.addMessageToQueue(to.uid, message)
             return
         }
 
-        devices.forEach(Consumer { device: Device? ->
+        (devicesOfFirstUser + devicesOfSecondUser).forEach { device ->
             messagingRepository.sendMessage(message, device)
-        })
+        }
     }
 }

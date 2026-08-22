@@ -1,6 +1,5 @@
 package dev.jason.project.spring.vc_server;
 
-import dev.jason.project.spring.vc_server.core.FirebaseConfig;
 import dev.jason.project.spring.vc_server.core.exception.VcExceptionHandler;
 import dev.jason.project.spring.vc_server.device_microservice.service.DeviceService;
 import dev.jason.project.spring.vc_server.microservice.messaging.service.MessagingService;
@@ -11,8 +10,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.scheduling.annotation.EnableScheduling;
-
-import java.io.IOException;
 
 @SpringBootApplication
 @EnableScheduling
@@ -26,8 +23,7 @@ import java.io.IOException;
 })
 public class VcServerApplication {
 
-    static void main(String[] args) throws IOException {
+    static void main(String[] args) {
         SpringApplication.run(VcServerApplication.class, args);
-        FirebaseConfig.initFirebase();
     }
 }
