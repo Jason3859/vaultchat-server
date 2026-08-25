@@ -4,7 +4,7 @@ import dev.jason.project.spring.vc_server.core.exception.VcException.MessagingEx
 import dev.jason.project.spring.vc_server.core.exception.VcException.SocialException.BlockedByUserException
 import dev.jason.project.spring.vc_server.core.model.Message
 import dev.jason.project.spring.vc_server.core.service.*
-import dev.jason.project.spring.vc_server.microservice.messaging.repo.messaging.MessagingRepository
+import dev.jason.project.spring.vc_server.microservice.messaging.repo.MessagingRepository
 import org.springframework.stereotype.Service
 
 @Service

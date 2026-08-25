@@ -3,6 +3,10 @@ package dev.jason.project.spring.vc_server.controller;
 import dev.jason.project.spring.vc_server.core.dto.DeviceDto;
 import dev.jason.project.spring.vc_server.core.dto.UserDto;
 import dev.jason.project.spring.vc_server.dto.RegisterUserDto;
+import dev.jason.project.spring.vc_server.microservice.device.controller.DeviceController;
+import dev.jason.project.spring.vc_server.microservice.social.controller.SocialController;
+import dev.jason.project.spring.vc_server.microservice.user.controller.UserController;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

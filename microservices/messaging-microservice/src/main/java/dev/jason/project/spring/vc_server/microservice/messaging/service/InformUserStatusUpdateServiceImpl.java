@@ -5,7 +5,8 @@ import dev.jason.project.spring.vc_server.core.model.User;
 import dev.jason.project.spring.vc_server.core.service.ConnectionsService;
 import dev.jason.project.spring.vc_server.core.service.GetDevicesService;
 import dev.jason.project.spring.vc_server.core.service.InformUserStatusUpdateService;
-import dev.jason.project.spring.vc_server.microservice.messaging.repo.messaging.MessagingRepository;
+import dev.jason.project.spring.vc_server.microservice.messaging.repo.MessagingRepository;
+
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 

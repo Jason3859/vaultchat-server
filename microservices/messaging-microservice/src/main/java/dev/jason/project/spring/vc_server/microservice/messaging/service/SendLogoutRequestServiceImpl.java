@@ -2,7 +2,8 @@ package dev.jason.project.spring.vc_server.microservice.messaging.service;
 
 import dev.jason.project.spring.vc_server.core.model.Device;
 import dev.jason.project.spring.vc_server.core.service.SendLogoutRequestService;
-import dev.jason.project.spring.vc_server.microservice.messaging.repo.messaging.MessagingRepository;
+import dev.jason.project.spring.vc_server.microservice.messaging.repo.MessagingRepository;
+
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
