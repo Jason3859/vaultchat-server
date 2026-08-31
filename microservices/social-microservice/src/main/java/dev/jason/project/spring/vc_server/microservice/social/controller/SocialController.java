@@ -1,23 +1,15 @@
 package dev.jason.project.spring.vc_server.microservice.social.controller;
 
-import java.util.List;
-
+import dev.jason.project.spring.vc_server.core.Endpoints;
+import dev.jason.project.spring.vc_server.core.dto.UserDto;
+import dev.jason.project.spring.vc_server.core.service.GetUserService;
+import dev.jason.project.spring.vc_server.core.service.SocialService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import dev.jason.project.spring.vc_server.core.Endpoints;
-import dev.jason.project.spring.vc_server.core.dto.UserDto;
-import dev.jason.project.spring.vc_server.core.model.Message;
-import dev.jason.project.spring.vc_server.core.service.GetUserService;
-import dev.jason.project.spring.vc_server.core.service.SocialService;
+import java.util.List;
 
 @RestController
 @RequestMapping(Endpoints.SOCIAL)
@@ -57,11 +49,6 @@ public class SocialController {
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 
-    @PatchMapping(Endpoints.ADD_MESSAGE_TO_QUEUE)
-    public void addMessageToQueue(@RequestParam String uid, @RequestBody Message message) {
-        socialService.addMessageToQueue(uid, message);
-    }
-
     @GetMapping(Endpoints.GET_CONNECTIONS)
     public ResponseEntity<List<UserDto>> connections(@RequestParam String uid) {
         List<UserDto> connections = socialService.getConnections(uid).stream()
@@ -79,10 +66,5 @@ public class SocialController {
             .toList();
 
         return new ResponseEntity<>(blockedUsers, HttpStatus.OK);
-    }
-
-    @GetMapping(Endpoints.IS_USER_BLOCKED)
-    public boolean isUserBlocked(@RequestParam String uid1, @RequestParam String uid2) {
-        return socialService.isUserBlocked(uid1, uid2);
     }
 }

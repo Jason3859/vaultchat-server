@@ -1,8 +1,8 @@
 package dev.jason.project.spring.vc_server.core.service;
 
-import java.util.List;
-
 import dev.jason.project.spring.vc_server.core.model.User;
+
+import java.util.List;
 
 public interface SocialService extends CheckIfUserIsBlockedService, ConnectionsService, MessageQueueService {
 

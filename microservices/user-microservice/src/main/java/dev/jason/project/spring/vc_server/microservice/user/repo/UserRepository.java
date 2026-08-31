@@ -1,9 +1,8 @@
 package dev.jason.project.spring.vc_server.microservice.user.repo;
 
+import dev.jason.project.spring.vc_server.microservice.user.model.UserEntity;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
-
-import dev.jason.project.spring.vc_server.microservice.user.model.UserEntity;
 
 import java.util.List;
 

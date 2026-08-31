@@ -5,6 +5,7 @@ import dev.jason.project.spring.vc_server.core.model.Result;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
@@ -68,6 +69,11 @@ public class VcExceptionHandler {
 	@ExceptionHandler(VcException.MessagingException.InternalError.class)
 	public ResponseEntity<?> handleMessagingException() {
 		return error(Result.Error, HttpStatus.INTERNAL_SERVER_ERROR, "Internal messaging error.");
+	}
+
+	@ExceptionHandler(VcException.DeviceException.NotInLogoutQueueException.class)
+	public ResponseEntity<?> handleNotInLogoutQueueException() {
+		return error(Result.NotInLogoutQueue, HttpStatus.NOT_ACCEPTABLE, "Device is not in logout queue");
 	}
 
 	private ResponseEntity<ErrorResponse> error(Result result, HttpStatus status, String message) {

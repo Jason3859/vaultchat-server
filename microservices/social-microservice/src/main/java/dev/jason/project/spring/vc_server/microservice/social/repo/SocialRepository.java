@@ -1,9 +1,8 @@
 package dev.jason.project.spring.vc_server.microservice.social.repo;
 
+import dev.jason.project.spring.vc_server.microservice.social.model.SocialEntity;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
-
-import dev.jason.project.spring.vc_server.microservice.social.model.SocialEntity;
 
 import java.util.Optional;
 

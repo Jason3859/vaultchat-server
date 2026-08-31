@@ -16,6 +16,7 @@ dependencies {
 
 	implementation libs.spring.boot.starter.webmvc
 	implementation libs.spring.boot.starter.data.mongodb
+	implementation libs.spring.boot.starter.websocket
 	implementation libs.firebase.admin
 
     testImplementation libs.spring.boot.starter.webmvc.test

@@ -14,6 +14,8 @@ public class VcException extends RuntimeException {
 		public static final class DeviceAlreadyExistsException extends DeviceException {}
 
 		public static final class DeviceNotFoundException extends DeviceException {}
+
+		public static final class NotInLogoutQueueException extends DeviceException {}
 	}
 
 	public static class SocialException extends VcException {

@@ -21,6 +21,7 @@ dependencies {
 
 	implementation libs.spring.boot.starter.data.mongodb
 	implementation libs.spring.boot.starter.webmvc
+	implementation libs.spring.boot.starter.websocket
 
 	testImplementation libs.spring.boot.starter.webmvc.test
 	testRuntimeOnly libs.junit.platform.launcher

@@ -21,9 +21,9 @@ public class MessagingRepoImpl implements MessagingRepository {
     @Override
     public void sendMessage(dev.jason.project.spring.vc_server.core.model.Message message, Device device) {
     	Message firebaseMessage = Message.builder()
-            .setToken(device.getToken())
+            .setToken(device.token())
             .putData("type", "message")
-            .putAllData(message.asMap())
+//            .putAllData(message.asMap())
             .setAndroidConfig(
             	AndroidConfig.builder()
             		.setPriority(Priority.HIGH)
@@ -37,7 +37,7 @@ public class MessagingRepoImpl implements MessagingRepository {
     @Override
     public void sendUserStatusUpdate(Device device, String uid, User.Status status) {
         Message firebaseMessage = Message.builder()
-            .setToken(device.getToken())
+            .setToken(device.token())
             .putData("type", "status_update")
             .putData("uid", uid)
             .putData("status", status.toString())
@@ -51,7 +51,7 @@ public class MessagingRepoImpl implements MessagingRepository {
     	Message firebaseMessage = Message.builder()
     		.putData("type", "logout_request")
     		.putData("clear_messages", String.valueOf(clearMessages))
-    		.setToken(device.getToken())
+    		.setToken(device.token())
     		.setAndroidConfig(
     			AndroidConfig.builder()
     				.setPriority(Priority.HIGH)

@@ -30,7 +30,7 @@ public class DeviceEntity {
 	}
 
 	public static DeviceEntity asEntity(Device device) {
-		return new DeviceEntity(device.getOwnerUid(), device.getName(), device.getType(), device.getOs(), device.getVersion(), device.getToken(), device.getLastUsed());
+		return new DeviceEntity(device.ownerUid(), device.name(), device.type(), device.os(), device.version(), device.token(), device.lastUsed());
 	}
 
 	@Override

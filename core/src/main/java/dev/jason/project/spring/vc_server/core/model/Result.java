@@ -6,14 +6,12 @@ public enum Result {
     DeviceAlreadyExists, 
     Error,
     MessageTextBlank, 
-    NoBlockedUsers, 
-    NoUsersFound,
+    NoBlockedUsers,
     SelfBlock, 
-    SelfUnblock, 
-    Success, 
+    SelfUnblock,
     UserAlreadyBlocked,
     UserAlreadyExists, 
     UserNotBlocked, 
-    UserNotFound, 
-    UsersAlreadyConnected, 
+    UserNotFound,
+    NotInLogoutQueue
 }

@@ -2,9 +2,11 @@ package dev.jason.project.spring.vc_server.microservice.user.service
 
 import dev.jason.project.spring.vc_server.core.exception.VcException.UserException.UserAlreadyExistsException
 import dev.jason.project.spring.vc_server.core.exception.VcException.UserException.UserNotFoundException
-import dev.jason.project.spring.vc_server.core.model.Device
 import dev.jason.project.spring.vc_server.core.model.User
-import dev.jason.project.spring.vc_server.core.service.*
+import dev.jason.project.spring.vc_server.core.service.CheckIfUserIsBlockedService
+import dev.jason.project.spring.vc_server.core.service.GetUserService
+import dev.jason.project.spring.vc_server.core.service.InformUserStatusUpdateService
+import dev.jason.project.spring.vc_server.core.service.UserService
 import dev.jason.project.spring.vc_server.microservice.user.model.UserEntity
 import dev.jason.project.spring.vc_server.microservice.user.repo.UserRepository
 import org.springframework.stereotype.Service
@@ -12,9 +14,7 @@ import org.springframework.stereotype.Service
 @Service
 class UserServiceImpl(
     private val repository: UserRepository,
-    private val sendLogoutRequestService: SendLogoutRequestService,
     private val informUserStatusUpdateService: InformUserStatusUpdateService,
-    private val deleteDeviceService: DeleteDeviceService,
     private val checkIfUserIsBlockedService: CheckIfUserIsBlockedService
 ) : UserService,
 	GetUserService by GetUserServiceImpl(repository) {
@@ -59,11 +59,6 @@ class UserServiceImpl(
         return repository.findByDisplayNameContainingIgnoreCase(query).stream()
             .map { it.asUser() }
             .toList()
-    }
-
-    override fun logout(device: Device, clearMessages: Boolean) {
-        sendLogoutRequestService.sendLogoutRequest(device, clearMessages)
-        deleteDeviceService.deleteDevice(device)
     }
 
     override fun searchUsers(fromUid: String, searchQuery: String): List<User> {
