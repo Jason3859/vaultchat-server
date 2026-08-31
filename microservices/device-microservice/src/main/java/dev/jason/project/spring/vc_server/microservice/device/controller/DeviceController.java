@@ -1,6 +1,5 @@
 package dev.jason.project.spring.vc_server.microservice.device.controller;
 
-import dev.jason.project.spring.vc_server.core.Endpoints;
 import dev.jason.project.spring.vc_server.core.dto.DeviceDto;
 import dev.jason.project.spring.vc_server.core.model.Device;
 import dev.jason.project.spring.vc_server.core.service.DeviceService;
@@ -13,7 +12,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
-@RequestMapping(Endpoints.DEVICE)
+@RequestMapping("/device")
 @AllArgsConstructor
 public class DeviceController {
 
@@ -25,19 +24,19 @@ public class DeviceController {
     }
     
 
-	@PostMapping(Endpoints.ADD)
+	@PostMapping("/add")
 	public ResponseEntity<?> addDevice(@RequestBody DeviceDto device) {
 		Device d = deviceService.addDevice(device.toDevice(LocalDateTime.now()));
 		return new ResponseEntity<>(DeviceDto.asDto(d), HttpStatus.CREATED);
 	}
 	
-	@DeleteMapping(Endpoints.DELETE)
+	@DeleteMapping("/delete")
 	public ResponseEntity<?> deleteDevice(@RequestBody DeviceDto device) {
 		deviceService.deleteDevice(device.toDevice());
 		return new ResponseEntity<>(device, HttpStatus.ACCEPTED);
 	}
 	
-	@GetMapping(Endpoints.MY_DEVICES)
+	@GetMapping("/mine")
 	public ResponseEntity<List<DeviceDto>> getDevices(@RequestParam String uid) {
 		List<DeviceDto> devices = deviceService.getDevicesByOwnerUid(uid)
 			.stream()
@@ -47,13 +46,13 @@ public class DeviceController {
 		return new ResponseEntity<>(devices, HttpStatus.OK);
 	}
 
-	@DeleteMapping(Endpoints.MARK_LOGOUT)
+	@DeleteMapping("/mark-logout")
 	@ResponseStatus(HttpStatus.ACCEPTED)
 	public void markDeviceForLogout(@RequestBody DeviceDto deviceDto, @RequestParam boolean clearMessages) {
 		deviceService.markDeviceForLogout(deviceDto.toDevice(), clearMessages);
 	}
 
-	@DeleteMapping(Endpoints.LOGOUT)
+	@DeleteMapping("/logout")
 	@ResponseStatus(HttpStatus.ACCEPTED)
 	public void logoutDevice(@RequestBody DeviceDto deviceDto) {
 		deviceService.deleteDevice(deviceDto.toDevice());

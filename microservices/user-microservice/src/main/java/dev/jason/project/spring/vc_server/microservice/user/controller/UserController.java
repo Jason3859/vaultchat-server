@@ -1,6 +1,5 @@
 package dev.jason.project.spring.vc_server.microservice.user.controller;
 
-import dev.jason.project.spring.vc_server.core.Endpoints;
 import dev.jason.project.spring.vc_server.core.dto.UserDto;
 import dev.jason.project.spring.vc_server.core.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(Endpoints.USER)
+@RequestMapping("/user")
 public class UserController {
 	
 	@Autowired
@@ -22,24 +21,24 @@ public class UserController {
         return "Hello, World!";
     }
 
-	@PostMapping(Endpoints.REGISTER)
+	@PostMapping("/register")
 	public ResponseEntity<?> register(@RequestBody UserDto userDto) {
 		userService.addUser(userDto.asUser());
 		return new ResponseEntity<>(userDto, HttpStatus.CREATED);
 	}
 	
-	@DeleteMapping(Endpoints.DELETE)
+	@DeleteMapping("/delete")
 	@ResponseStatus(HttpStatus.ACCEPTED)
 	public void deleteUser(@RequestParam String uid) {
 		userService.deleteUser(uid);
 	}
 	
-	@PatchMapping(Endpoints.HEARTBEAT)
+	@PatchMapping("/heartbeat")
 	public void heartbeat(@RequestParam String uid) {
 		userService.updateHeartBeat(uid);
 	}
 	
-	@GetMapping(Endpoints.SEARCH)
+	@GetMapping("/search")
 	public ResponseEntity<List<UserDto>> search(@RequestParam("from_uid") String fromUid, @RequestParam("search_query") String searchQuery) {
 		
 		if (searchQuery.isBlank()) {

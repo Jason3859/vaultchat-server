@@ -1,6 +1,5 @@
 package dev.jason.project.spring.vc_server.microservice.messaging.ws;
 
-import dev.jason.project.spring.vc_server.core.Endpoints;
 import org.jspecify.annotations.NonNull;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
@@ -14,7 +13,7 @@ public class MessagingWebSocketConfiguration implements WebSocketMessageBrokerCo
 
 	@Override
 	public void registerStompEndpoints(@NonNull StompEndpointRegistry registry) {
-		registry.addEndpoint(Endpoints.MESSAGES).setAllowedOrigins("*");
+		registry.addEndpoint("/messages").setAllowedOrigins("*");
 	}
 
 	@Override
