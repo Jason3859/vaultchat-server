@@ -2,7 +2,6 @@ package dev.jason.project.spring.vc_server.microservice.device.service
 
 import dev.jason.project.spring.vc_server.core.exception.VcException
 import dev.jason.project.spring.vc_server.core.exception.VcException.DeviceException.DeviceAlreadyExistsException
-import dev.jason.project.spring.vc_server.core.exception.VcException.DeviceException.DeviceNotFoundException
 import dev.jason.project.spring.vc_server.core.model.Device
 import dev.jason.project.spring.vc_server.core.service.*
 import dev.jason.project.spring.vc_server.microservice.device.model.DeviceEntity
@@ -38,11 +37,4 @@ class DeviceServiceImpl(
         return entity.asDevice()
     }
 
-    override fun verifyDevice(device: Device) {
-        val devices: MutableList<Device?> = getDevicesByOwnerUid(device.ownerUid)
-
-        if (!devices.contains(device)) {
-            throw DeviceNotFoundException()
-        }
-    }
 }

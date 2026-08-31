@@ -23,7 +23,6 @@ public class MessagesController {
 	@SuppressWarnings("unused") // for IntelliJ IDEA
 	public Message sendMessage(Message message) {
 		messageService.addMessage(message);
-		System.out.println(message); // TODO: remove while committing.
 		simpMessagingTemplate.convertAndSend("/topic/messages/" + message.from(), message);
 		simpMessagingTemplate.convertAndSend("/topic/messages/" + message.to(), message);
 		return message;
