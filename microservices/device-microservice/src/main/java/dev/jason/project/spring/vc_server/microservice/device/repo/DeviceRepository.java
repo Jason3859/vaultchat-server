@@ -1,10 +1,11 @@
 package dev.jason.project.spring.vc_server.microservice.device.repo;
 
-import dev.jason.project.spring.vc_server.microservice.device.model.DeviceEntity;
+import java.util.List;
+
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import dev.jason.project.spring.vc_server.microservice.device.model.DeviceEntity;
 
 
 @Repository

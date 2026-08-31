@@ -3,6 +3,7 @@ package dev.jason.project.spring.vc_server.core;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
+import dev.jason.project.spring.vc_server.core.exception.AdminSdkNotFoundException;
 import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

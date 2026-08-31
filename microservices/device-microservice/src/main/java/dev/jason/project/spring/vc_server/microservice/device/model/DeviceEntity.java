@@ -24,13 +24,29 @@ public class DeviceEntity {
 	@Id
 	private final String token;
 	private LocalDateTime lastUsed;
+	private LogoutMark logoutMark;
+
+	public record LogoutMark(boolean isMarked, boolean clearMessages) {}
 
 	public Device asDevice() {
 		return new Device(ownerUid, name, type, os, version, token, lastUsed);
 	}
 
 	public static DeviceEntity asEntity(Device device) {
-		return new DeviceEntity(device.ownerUid(), device.name(), device.type(), device.os(), device.version(), device.token(), device.lastUsed());
+		return new DeviceEntity(
+			device.ownerUid(),
+			device.name(),
+			device.type(),
+			device.os(),
+			device.version(),
+			device.token(),
+			device.lastUsed(),
+			new LogoutMark(false, false)
+		);
+	}
+
+	public void setLogoutMark(LogoutMark logoutMark) {
+		this.logoutMark = logoutMark;
 	}
 
 	@Override
