@@ -4,5 +4,5 @@ import dev.jason.project.spring.vc_server.core.model.User;
 
 public interface InformUserStatusUpdateService {
 
-    void sendStatusUpdate(String uid, User.Status status);
+    void sendStatusUpdate(String userUid, User.Status userStatus);
 }

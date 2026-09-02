@@ -24,4 +24,14 @@ public class GetUserServiceImpl implements GetUserService {
         if (entity.isEmpty()) throw new VcException.UserException.UserNotFoundException();
         return entity.get().asUser();
     }
+
+    @Override
+    public boolean doesUserExist(String uid) {
+        try {
+            getUserByUid(uid);
+            return true;
+        } catch (VcException.UserException.UserNotFoundException e) {
+            return false;
+        }
+    }
 }

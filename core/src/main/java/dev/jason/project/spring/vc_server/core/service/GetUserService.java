@@ -10,4 +10,5 @@ public interface GetUserService {
      * @return User instance of user if that user exists in database
      */
     User getUserByUid(String uid);
+    boolean doesUserExist(String uid);
 }

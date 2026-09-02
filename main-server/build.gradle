@@ -23,6 +23,9 @@ dependencies {
 	implementation libs.spring.boot.starter.webmvc
 	implementation libs.spring.boot.starter.websocket
 
+	compileOnly libs.lombok
+	annotationProcessor libs.lombok
+
 	testImplementation libs.spring.boot.starter.webmvc.test
 	testRuntimeOnly libs.junit.platform.launcher
 }

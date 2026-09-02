@@ -21,31 +21,19 @@ class UserServiceImpl(
 
     override fun addUser(user: User) {
         val entity = repository.findById(user.uid)
-
-        if (entity.isPresent) {
-            throw UserAlreadyExistsException()
-        }
+        if (entity.isPresent) throw UserAlreadyExistsException()
 
         repository.save(UserEntity.asEntity(user))
     }
 
     override fun deleteUser(uid: String) {
         val entity = repository.findById(uid)
-
-        if (entity.isPresent) {
-            repository.delete(entity.get())
-            return
-        }
-
-        throw UserNotFoundException()
+        if (entity.isPresent) repository.delete(entity.get()) else throw UserNotFoundException()
     }
 
     override fun updateHeartBeat(uid: String) {
         val entity = repository.findById(uid)
-
-        if (entity.isEmpty) {
-            throw UserNotFoundException()
-        }
+        if (entity.isEmpty) throw UserNotFoundException()
 
         val e = entity.get()
         e.lastHeartBeat = System.currentTimeMillis()
