@@ -29,15 +29,15 @@ class MessagesController {
     @MessageMapping("/send")
     @Suppress("unused") // for IntelliJ IDEA
     fun sendMessage(@Payload message: Message): Message {
-        messageService.addMessage(message)
-        messagingTemplate.convertAndSendToUser(message.from, "/topic/messages", message)
-        messagingTemplate.convertAndSendToUser(message.to, "/topic/messages", message)
+        val msg = messageService.addMessage(message)
+        messagingTemplate.convertAndSendToUser(message.from, "/topic/messages", msg)
+        messagingTemplate.convertAndSendToUser(message.to, "/topic/messages", msg)
         return message
     }
 
     @ResponseBody
     @GetMapping("/messages/fetch")
-    fun fetchMessages(@RequestParam uid: String?): ResponseEntity<*> {
+    fun fetchMessages(@RequestParam uid: String): ResponseEntity<*> {
         val messages = messageService.getMessages(uid)
         val status = if (messages.isEmpty()) HttpStatus.NO_CONTENT else HttpStatus.OK
         return ResponseEntity(messages, status)

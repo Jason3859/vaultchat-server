@@ -8,26 +8,33 @@ import dev.jason.project.spring.vc_server.microservice.messaging.repo.MessageRep
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 @AllArgsConstructor
 public class MessageServiceImpl implements MessageService {
 
-	private final MessageRepository messageRepository;
-	private final GetUserService getUserService;
-	
-	@Override
-	public void addMessage(Message message) {
-		messageRepository.save(MessageEntity.fromMessage(message));
-	}
+    private final MessageRepository messageRepository;
+    private final GetUserService getUserService;
 
-	@Override
-	public List<Message> getMessages(String uid) {
-		getUserService.getUserByUid(uid);
+    @Override
+    public Message addMessage(Message message) {
+        return messageRepository.save(MessageEntity.fromMessage(message)).toMessage();
+    }
 
-		return messageRepository.findAllByFrom(uid).stream()
-			.map(MessageEntity::toMessage)
-			.toList();
-	}
+    @Override
+    public List<Message> getMessages(String uid) {
+        getUserService.getUserByUid(uid);
+
+        var sent = messageRepository.findAllByFrom(uid);
+        var received = messageRepository.findAllByTo(uid);
+
+        var messages = new ArrayList<>(sent);
+        messages.addAll(received);
+
+        return messages.stream()
+            .map(MessageEntity::toMessage)
+            .toList();
+    }
 }

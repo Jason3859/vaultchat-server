@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface MessageService {
 
-	void addMessage(Message message);
-	List<Message> getMessages(String from);
+	Message addMessage(Message message);
+	List<Message> getMessages(String uid);
 }
