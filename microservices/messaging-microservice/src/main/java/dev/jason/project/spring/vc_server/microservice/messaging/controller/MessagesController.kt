@@ -1,7 +1,9 @@
 package dev.jason.project.spring.vc_server.microservice.messaging.controller
 
 import dev.jason.project.spring.vc_server.core.model.Message
+import dev.jason.project.spring.vc_server.core.dto.MessageDto
 import dev.jason.project.spring.vc_server.core.service.MessageService
+import dev.jason.project.spring.vc_server.core.service.GetUserService
 import dev.jason.project.spring.vc_server.microservice.messaging.events.MessagingEvent
 import dev.jason.project.spring.vc_server.microservice.messaging.events.MessagingEvents
 import kotlinx.coroutines.CoroutineScope
@@ -24,14 +26,18 @@ class MessagesController {
     private val coroutineScope = CoroutineScope(Dispatchers.Default)
 
     @Autowired private lateinit var messageService: MessageService
+    @Autowired private lateinit var getUserService: GetUserService
     @Autowired private lateinit var messagingTemplate: SimpMessagingTemplate
 
     @MessageMapping("/send")
     @Suppress("unused") // for IntelliJ IDEA
     fun sendMessage(@Payload message: Message): Message {
         val msg = messageService.addMessage(message)
-        messagingTemplate.convertAndSendToUser(message.from, "/topic/messages", msg)
-        messagingTemplate.convertAndSendToUser(message.to, "/topic/messages", msg)
+        val fromDisplayName = getUserService.getUserByUid(msg.from).displayName
+        val messageDto = MessageDto(msg.from, fromDisplayName, msg.to, msg.text, msg.timestamp)
+        
+        messagingTemplate.convertAndSendToUser(message.from, "/topic/messages", messageDto)
+        messagingTemplate.convertAndSendToUser(message.to, "/topic/messages", messageDto)
         return message
     }
 

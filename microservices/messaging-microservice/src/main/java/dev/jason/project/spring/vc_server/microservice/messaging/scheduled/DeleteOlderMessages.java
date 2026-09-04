@@ -19,8 +19,11 @@ public class DeleteOlderMessages {
 
     @Scheduled(fixedRate = DURATION_MONTH_IN_MILLIS)
     void deleteOlderMessages() {
-        log.info("Deleting older messages...");
-        messageRepository.deleteByTimestampBefore(LocalDateTime.now().minusMonths(1));
-        log.info("Successfully deleted messages older than a month.");
+        LocalDateTime cutoff = LocalDateTime.now().minusMonths(1);
+        log.info("Cutoff computed as: {}", cutoff);
+        long totalBefore = messageRepository.count();
+        messageRepository.deleteByTimestampBefore(cutoff);
+        long totalAfter = messageRepository.count();
+        log.info("Deleted {} of {} messages (cutoff={})", totalBefore - totalAfter, totalBefore, cutoff);
     }
 }
