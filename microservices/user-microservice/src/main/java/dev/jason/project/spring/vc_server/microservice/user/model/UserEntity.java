@@ -29,7 +29,7 @@ public class UserEntity {
 	}
 
 	public static UserEntity asEntity(User user, long lastHeartBeat) {
-		return new UserEntity(user.uid(), user.displayName(), user.profilePictureUrl(), user.status(), lastHeartBeat);
+		return new UserEntity(user.uid(), user.displayName(), user.profilePictureUrl().replace("=s96-c", ""), user.status(), lastHeartBeat);
 	}
 
     public void setDisplayName(String displayName) {
