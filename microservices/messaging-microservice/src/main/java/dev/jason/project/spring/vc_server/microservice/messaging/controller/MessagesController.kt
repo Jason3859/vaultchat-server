@@ -1,11 +1,11 @@
 package dev.jason.project.spring.vc_server.microservice.messaging.controller
 
-import dev.jason.project.spring.vc_server.core.model.Message
 import dev.jason.project.spring.vc_server.core.dto.MessageDto
-import dev.jason.project.spring.vc_server.core.service.MessageService
 import dev.jason.project.spring.vc_server.core.service.GetUserService
+import dev.jason.project.spring.vc_server.core.service.MessageService
 import dev.jason.project.spring.vc_server.microservice.messaging.events.MessagingEvent
 import dev.jason.project.spring.vc_server.microservice.messaging.events.MessagingEvents
+import dev.jason.project.spring.vc_server.microservice.messaging.model.MessagePayload
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -29,23 +29,14 @@ class MessagesController {
     @Autowired private lateinit var getUserService: GetUserService
     @Autowired private lateinit var messagingTemplate: SimpMessagingTemplate
 
+    @Suppress("unused")
     @MessageMapping("/send")
-    @Suppress("unused") // for IntelliJ IDEA
-    fun sendMessage(@Payload message: Message): Message {
-        val msg = messageService.addMessage(message)
-        val fromDisplayName = getUserService.getUserByUid(msg.from).displayName
-        val messageDto = MessageDto(
-            /* id = */ msg.id,
-            /* from = */ msg.from,
-            /* fromDisplayName = */ fromDisplayName,
-            /* to = */ msg.to,
-            /* text = */ msg.text,
-            /* timestamp = */ msg.timestamp
-        )
-        
-        messagingTemplate.convertAndSendToUser(message.from, "/topic/messages", messageDto)
-        messagingTemplate.convertAndSendToUser(message.to, "/topic/messages", messageDto)
-        return message
+    fun sendMessage(@Payload messagePayload: MessagePayload) {
+        val message = messageService.addMessage(messagePayload.toMessage())
+        val payload = MessageDto.fromMessage(message)
+
+        messagingTemplate.convertAndSendToUser(message.from.uid, "/topic/messages", payload)
+        messagingTemplate.convertAndSendToUser(message.to.uid, "/topic/messages", payload)
     }
 
     @ResponseBody
@@ -54,14 +45,7 @@ class MessagesController {
         val messages = messageService.getMessages(uid)
         val status = if (messages.isEmpty()) HttpStatus.NO_CONTENT else HttpStatus.OK
 
-        val response = messages.map { msg ->
-            val user = getUserService.getUserByUid(msg.from)
-            with(msg) {
-                MessageDto(id, from, user.displayName, to, text, timestamp)
-            }
-        }
-
-        return ResponseEntity(response, status)
+        return ResponseEntity(messages, status)
     }
 
     init {
@@ -69,11 +53,7 @@ class MessagesController {
             MessagingEvents.events.collect { event ->
                 if (event is MessagingEvent.UserStatusUpdate) {
                     val payload = mapOf("uid" to event.userUid, "status" to event.status)
-                    messagingTemplate.convertAndSendToUser(
-                        event.toUid,
-                        "/topic/connections-status",
-                        payload
-                    )
+                    messagingTemplate.convertAndSendToUser(event.toUid, "/topic/connections-status", payload)
                 }
             }
         }

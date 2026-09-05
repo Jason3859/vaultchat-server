@@ -4,8 +4,7 @@ public record User(
     String uid,
     String displayName,
     String profilePictureUrl,
-    Status status,
-    long lastHeartbeat
+    Status status
 ) {
     public enum Status {
         Online, Away, Offline

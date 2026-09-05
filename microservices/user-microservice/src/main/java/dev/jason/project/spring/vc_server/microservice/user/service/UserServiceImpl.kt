@@ -23,7 +23,7 @@ class UserServiceImpl(
         val entity = repository.findById(user.uid)
         if (entity.isPresent) throw UserAlreadyExistsException()
 
-        repository.save(UserEntity.asEntity(user))
+        repository.save(UserEntity.asEntity(user, System.currentTimeMillis()))
     }
 
     override fun deleteUser(uid: String) {
@@ -31,14 +31,16 @@ class UserServiceImpl(
         if (entity.isPresent) repository.delete(entity.get()) else throw UserNotFoundException()
     }
 
+    @Suppress("UsePropertyAccessSyntax")
     override fun updateHeartBeat(uid: String) {
-        val entity = repository.findById(uid)
-        if (entity.isEmpty) throw UserNotFoundException()
+        val optional = repository.findById(uid)
+        if (optional.isEmpty) throw UserNotFoundException()
 
-        val e = entity.get()
-        e.lastHeartBeat = System.currentTimeMillis()
-        e.status = User.Status.Online
-        repository.save(e)
+        val entity = optional.get()
+        entity.setLastHeartBeat(System.currentTimeMillis())
+        entity.setStatus(User.Status.Online)
+
+        repository.save(entity)
 
         informUserStatusUpdateService.sendStatusUpdate(uid, User.Status.Online)
     }

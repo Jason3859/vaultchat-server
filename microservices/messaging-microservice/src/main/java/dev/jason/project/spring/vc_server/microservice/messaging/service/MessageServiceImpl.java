@@ -20,7 +20,8 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public Message addMessage(Message message) {
-        return messageRepository.save(MessageEntity.fromMessage(message)).toMessage();
+        MessageEntity messageEntity = messageRepository.save(MessageEntity.fromMessage(message));
+        return asMessage(messageEntity);
     }
 
     @Override
@@ -34,7 +35,14 @@ public class MessageServiceImpl implements MessageService {
         messages.addAll(received);
 
         return messages.stream()
-            .map(MessageEntity::toMessage)
+            .map(this::asMessage)
             .toList();
+    }
+
+    private Message asMessage(MessageEntity entity) {
+        var from = getUserService.getUserByUid(entity.from());
+        var to = getUserService.getUserByUid(entity.to());
+
+        return new Message(entity.id(), from, to, entity.text(), entity.timestamp());
     }
 }

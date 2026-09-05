@@ -16,10 +16,6 @@ public record MessageEntity(
 ) {
 
     public static MessageEntity fromMessage(Message message) {
-		return new MessageEntity(message.id(), message.from(), message.to(), message.text(), message.timestamp());
-	}
-	
-	public Message toMessage() {
-		return new Message(id, from, to, text, timestamp);
+		return new MessageEntity(message.id(), message.from().uid(), message.to().uid(), message.text(), message.timestamp());
 	}
 }

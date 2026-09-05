@@ -10,12 +10,6 @@ public record UserDto(String uid, String displayName, String profilePictureUrl, 
 	}
 	
 	public User asUser() {
-		return new User(
-            uid,
-            displayName,
-            profilePictureUrl,
-            User.Status.Online,
-            System.currentTimeMillis()
-        );
+		return new User(uid, displayName, profilePictureUrl, status);
 	}
 }

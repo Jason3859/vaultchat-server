@@ -1,9 +1,11 @@
 package dev.jason.project.spring.vc_server.microservice.user.model;
 
 import dev.jason.project.spring.vc_server.core.model.User;
+import lombok.Getter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+@Getter
 @Document(collection = "user")
 public class UserEntity {
 
@@ -23,34 +25,14 @@ public class UserEntity {
 	}
 
 	public User asUser() {
-		return new User(uid, displayName, profilePictureUrl, status, lastHeartBeat);
+		return new User(uid, displayName, profilePictureUrl, status);
 	}
 
-	public static UserEntity asEntity(User user) {
-		return new UserEntity(user.uid(), user.displayName(), user.profilePictureUrl(), user.status(), user.lastHeartbeat());
+	public static UserEntity asEntity(User user, long lastHeartBeat) {
+		return new UserEntity(user.uid(), user.displayName(), user.profilePictureUrl(), user.status(), lastHeartBeat);
 	}
 
-	public String getUid() {
-		return this.uid;
-	}
-
-	public String getDisplayName() {
-		return this.displayName;
-	}
-
-	public String getProfilePictureUrl() {
-		return this.profilePictureUrl;
-	}
-
-	public User.Status getStatus() {
-		return this.status;
-	}
-
-	public long getLastHeartBeat() {
-		return this.lastHeartBeat;
-	}
-
-	public void setDisplayName(String displayName) {
+    public void setDisplayName(String displayName) {
 		this.displayName = displayName;
 	}
 
