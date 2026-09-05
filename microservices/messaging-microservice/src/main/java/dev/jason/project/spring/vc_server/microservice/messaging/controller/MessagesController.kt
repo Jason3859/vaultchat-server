@@ -34,7 +34,14 @@ class MessagesController {
     fun sendMessage(@Payload message: Message): Message {
         val msg = messageService.addMessage(message)
         val fromDisplayName = getUserService.getUserByUid(msg.from).displayName
-        val messageDto = MessageDto(msg.from, fromDisplayName, msg.to, msg.text, msg.timestamp)
+        val messageDto = MessageDto(
+            /* id = */ msg.id,
+            /* from = */ msg.from,
+            /* fromDisplayName = */ fromDisplayName,
+            /* to = */ msg.to,
+            /* text = */ msg.text,
+            /* timestamp = */ msg.timestamp
+        )
         
         messagingTemplate.convertAndSendToUser(message.from, "/topic/messages", messageDto)
         messagingTemplate.convertAndSendToUser(message.to, "/topic/messages", messageDto)
@@ -46,7 +53,15 @@ class MessagesController {
     fun fetchMessages(@RequestParam uid: String): ResponseEntity<*> {
         val messages = messageService.getMessages(uid)
         val status = if (messages.isEmpty()) HttpStatus.NO_CONTENT else HttpStatus.OK
-        return ResponseEntity(messages, status)
+
+        val response = messages.map { msg ->
+            val user = getUserService.getUserByUid(msg.from)
+            with(msg) {
+                MessageDto(id, from, user.displayName, to, text, timestamp)
+            }
+        }
+
+        return ResponseEntity(response, status)
     }
 
     init {
