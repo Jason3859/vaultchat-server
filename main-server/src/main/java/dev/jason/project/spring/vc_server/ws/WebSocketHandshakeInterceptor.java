@@ -1,4 +1,4 @@
-package dev.jason.project.spring.vc_server.microservice.messaging.ws;
+package dev.jason.project.spring.vc_server.ws;
 
 import dev.jason.project.spring.vc_server.core.service.GetUserService;
 import lombok.AllArgsConstructor;

@@ -1,4 +1,4 @@
-package dev.jason.project.spring.vc_server.microservice.messaging.ws;
+package dev.jason.project.spring.vc_server.ws;
 
 import dev.jason.project.spring.vc_server.core.service.GetUserService;
 import lombok.AllArgsConstructor;
@@ -25,7 +25,7 @@ public class MessagingWebSocketConfiguration implements WebSocketMessageBrokerCo
 
 	@Override
 	public void registerStompEndpoints(@NonNull StompEndpointRegistry registry) {
-		registry.addEndpoint("/messages")
+		registry.addEndpoint("/")
 			.addInterceptors(new WebSocketHandshakeInterceptor(getUserService))
 			.setHandshakeHandler(new DefaultHandshakeHandler() {
 				@Override
