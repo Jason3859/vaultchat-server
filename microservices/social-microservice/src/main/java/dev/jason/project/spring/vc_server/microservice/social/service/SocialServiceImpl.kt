@@ -18,15 +18,9 @@ class SocialServiceImpl(
     ConnectionsService by ConnectionsServiceImpl(repository) {
 
     override fun getBlockedUsers(uid: String): List<User> {
-        val entity = repository.findByUserId(uid)
-
-        if (entity.isEmpty) throw UserNotFoundException()
-
-        return entity.get()
-            .blocklist
-            .stream()
+        val entity = getSocialEntityByUid(uid)
+        return entity.blocklist
             .map { uid -> getUserService.getUserByUid(uid) }
-            .toList()
     }
 
     override fun registerNewUser(uid: String) {
@@ -37,9 +31,7 @@ class SocialServiceImpl(
     }
 
     override fun block(uid1: String, uid2: String) {
-        if (uid1 == uid2) {
-            throw SelfBlockException()
-        }
+        if (uid1 == uid2) throw SelfBlockException()
 
         val entity1 = getSocialEntityByUid(uid1)
         val entity2 = getSocialEntityByUid(uid2)
@@ -55,30 +47,20 @@ class SocialServiceImpl(
     }
 
     override fun unblock(uid1: String, uid2: String) {
-        if (uid1 == uid2) {
-            throw SelfUnblockException()
-        }
+        if (uid1 == uid2) throw SelfUnblockException()
 
         val entity1 = getSocialEntityByUid(uid1)
-
         val blocklist = entity1.blocklist
 
-        if (blocklist.contains(uid2)) {
-            blocklist.remove(uid2)
-            repository.save(entity1)
-            return
+        if (!blocklist.contains(uid2)) {
+            throw UserNotBlockedException()
         }
 
-        throw UserNotBlockedException()
+        blocklist.remove(uid2)
+        repository.save(entity1)
     }
 
     fun getSocialEntityByUid(uid: String): SocialEntity {
-        val entity = repository.findByUserId(uid)
-
-        if (entity.isEmpty) {
-            throw UserNotFoundException()
-        }
-
-        return entity.get()
+        return repository.findByUserId(uid).orElseThrow(::UserNotFoundException)
     }
 }
