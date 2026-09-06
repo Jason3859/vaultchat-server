@@ -1,6 +1,7 @@
 package dev.jason.project.spring.vc_server.microservice.messaging.controller
 
 import dev.jason.project.spring.vc_server.core.dto.MessageDto
+import dev.jason.project.spring.vc_server.core.service.CheckIfUserIsBlockedService
 import dev.jason.project.spring.vc_server.core.service.GetUserService
 import dev.jason.project.spring.vc_server.core.service.MessageService
 import dev.jason.project.spring.vc_server.microservice.messaging.model.MessagePayload
@@ -25,10 +26,14 @@ class MessagesController {
     @Autowired private lateinit var messageService: MessageService
     @Autowired private lateinit var getUserService: GetUserService
     @Autowired private lateinit var messagingTemplate: SimpMessagingTemplate
+    @Autowired private lateinit var checkIfUserIsBlockedService: CheckIfUserIsBlockedService
 
     @Suppress("unused")
     @MessageMapping("/message.send")
     fun sendMessage(@Payload messagePayload: MessagePayload) {
+        val userBlocked = checkIfUserIsBlockedService.isUserBlocked(messagePayload.from, messagePayload.to)
+        if (userBlocked) return
+
         val message = messageService.addMessage(messagePayload.toMessage())
         val responseBody = MessageDto.fromMessage(message)
 
