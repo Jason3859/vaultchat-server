@@ -9,7 +9,6 @@ import java.util.List;
 public record SocialEntity(
     @Id String userId,
     List<String> blocklist,
-    List<String> connections,
-    List<String> queuedMessages
+    List<String> connections
 ) {
 }

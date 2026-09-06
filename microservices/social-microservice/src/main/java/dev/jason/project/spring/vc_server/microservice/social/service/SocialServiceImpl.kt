@@ -15,8 +15,7 @@ class SocialServiceImpl(
     private val getUserService: GetUserService
 ) :	SocialService,
     CheckIfUserIsBlockedService by CheckIfUserIsBlockedServiceImpl(repository),
-    ConnectionsService by ConnectionsServiceImpl(repository),
-    MessageQueueService by MessageQueueServiceImpl(repository) {
+    ConnectionsService by ConnectionsServiceImpl(repository) {
 
     override fun getBlockedUsers(uid: String): List<User> {
         val entity = repository.findByUserId(uid)
@@ -31,11 +30,9 @@ class SocialServiceImpl(
     }
 
     override fun registerNewUser(uid: String) {
-        if (repository.findByUserId(uid).isPresent) {
-            throw UserAlreadyExistsException()
-        }
+        if (repository.findByUserId(uid).isPresent) throw UserAlreadyExistsException()
 
-        val entity = SocialEntity(uid, emptyList(), emptyList(), emptyList())
+        val entity = SocialEntity(uid, emptyList(), emptyList())
         repository.save(entity)
     }
 

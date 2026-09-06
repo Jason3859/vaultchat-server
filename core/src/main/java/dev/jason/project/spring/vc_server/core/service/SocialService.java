@@ -4,7 +4,7 @@ import dev.jason.project.spring.vc_server.core.model.User;
 
 import java.util.List;
 
-public interface SocialService extends CheckIfUserIsBlockedService, ConnectionsService, MessageQueueService {
+public interface SocialService extends CheckIfUserIsBlockedService, ConnectionsService {
 
 	List<User> getBlockedUsers(String uid);
 	
