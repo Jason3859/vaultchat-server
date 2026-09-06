@@ -12,7 +12,7 @@ public class UserEntity {
 	@Id
 	private final String uid;
 	private String displayName;
-	private String profilePictureUrl;
+	private final String profilePictureUrl;
 	private User.Status status;
 	private long lastHeartBeat;
 
@@ -34,10 +34,6 @@ public class UserEntity {
 
     public void setDisplayName(String displayName) {
 		this.displayName = displayName;
-	}
-
-	public void setProfilePictureUrl(String profilePictureUrl) {
-		this.profilePictureUrl = profilePictureUrl;
 	}
 
 	public void setStatus(User.Status status) {

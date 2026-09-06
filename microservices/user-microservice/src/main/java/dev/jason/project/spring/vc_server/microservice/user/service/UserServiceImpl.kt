@@ -33,10 +33,8 @@ class UserServiceImpl(
 
     @Suppress("UsePropertyAccessSyntax")
     override fun updateHeartBeat(uid: String) {
-        val optional = repository.findById(uid)
-        if (optional.isEmpty) throw UserNotFoundException()
+        val entity = repository.findById(uid).orElseThrow { UserNotFoundException() }
 
-        val entity = optional.get()
         entity.setLastHeartBeat(System.currentTimeMillis())
         entity.setStatus(User.Status.Online)
 
@@ -45,15 +43,23 @@ class UserServiceImpl(
         informUserStatusUpdateService.sendStatusUpdate(uid, User.Status.Online)
     }
 
-    override fun getAllUsersByDisplayName(query: String): List<User> {
-        return repository.findByDisplayNameContainingIgnoreCase(query).stream()
-            .map { it.asUser() }
-            .toList()
+    @Suppress("UsePropertyAccessSyntax")
+    override fun updateDisplayName(uid: String, displayName: String): User? {
+        val entity = repository.findById(uid).orElseThrow { UserNotFoundException() }
+
+        entity.setDisplayName(displayName)
+        return repository.save(entity).asUser()
     }
 
     override fun searchUsers(fromUid: String, searchQuery: String): List<User> {
         return getAllUsersByDisplayName(searchQuery)
             .filter { it.uid != fromUid }
             .filter { !checkIfUserIsBlockedService.isUserBlocked(fromUid, it.uid) }
+    }
+
+    private fun getAllUsersByDisplayName(query: String): List<User> {
+        return repository.findByDisplayNameContainingIgnoreCase(query).stream()
+            .map { it.asUser() }
+            .toList()
     }
 }
