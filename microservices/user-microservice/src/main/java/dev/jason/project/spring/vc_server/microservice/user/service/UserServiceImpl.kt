@@ -5,16 +5,15 @@ import dev.jason.project.spring.vc_server.core.exception.VcException.UserExcepti
 import dev.jason.project.spring.vc_server.core.model.User
 import dev.jason.project.spring.vc_server.core.service.CheckIfUserIsBlockedService
 import dev.jason.project.spring.vc_server.core.service.GetUserService
-import dev.jason.project.spring.vc_server.core.service.InformUserStatusUpdateService
 import dev.jason.project.spring.vc_server.core.service.UserService
 import dev.jason.project.spring.vc_server.microservice.user.model.UserEntity
 import dev.jason.project.spring.vc_server.microservice.user.repo.UserRepository
 import org.springframework.stereotype.Service
 
+@Suppress("UsePropertyAccessSyntax")
 @Service
 class UserServiceImpl(
     private val repository: UserRepository,
-    private val informUserStatusUpdateService: InformUserStatusUpdateService,
     private val checkIfUserIsBlockedService: CheckIfUserIsBlockedService
 ) : UserService,
 	GetUserService by GetUserServiceImpl(repository) {
@@ -23,7 +22,7 @@ class UserServiceImpl(
         val entity = repository.findById(user.uid)
         if (entity.isPresent) throw UserAlreadyExistsException()
 
-        repository.save(UserEntity.asEntity(user, System.currentTimeMillis()))
+        repository.save(UserEntity.asEntity(user))
     }
 
     override fun deleteUser(uid: String) {
@@ -31,19 +30,13 @@ class UserServiceImpl(
         if (entity.isPresent) repository.delete(entity.get()) else throw UserNotFoundException()
     }
 
-    @Suppress("UsePropertyAccessSyntax")
-    override fun updateHeartBeat(uid: String) {
-        val entity = repository.findById(uid).orElseThrow { UserNotFoundException() }
+    override fun setStatus(uid: String, status: User.Status) {
+        val entity = repository.findById(uid).orElseThrow(::UserNotFoundException)
 
-        entity.setLastHeartBeat(System.currentTimeMillis())
-        entity.setStatus(User.Status.Online)
-
+        entity.setStatus(status)
         repository.save(entity)
-
-        informUserStatusUpdateService.sendStatusUpdate(uid, User.Status.Online)
     }
 
-    @Suppress("UsePropertyAccessSyntax")
     override fun updateDisplayName(uid: String, displayName: String): User? {
         val entity = repository.findById(uid).orElseThrow { UserNotFoundException() }
 

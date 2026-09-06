@@ -1,6 +1,6 @@
 package dev.jason.project.spring.vc_server.ws;
 
-import dev.jason.project.spring.vc_server.core.service.GetUserService;
+import dev.jason.project.spring.vc_server.core.service.UserService;
 import lombok.AllArgsConstructor;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
@@ -21,12 +21,12 @@ import java.util.Map;
 @AllArgsConstructor
 public class MessagingWebSocketConfiguration implements WebSocketMessageBrokerConfigurer {
 
-	private GetUserService getUserService;
+	private UserService userService;
 
 	@Override
 	public void registerStompEndpoints(@NonNull StompEndpointRegistry registry) {
-		registry.addEndpoint("/")
-			.addInterceptors(new WebSocketHandshakeInterceptor(getUserService))
+		registry.addEndpoint("/ws")
+			.addInterceptors(new WebSocketHandshakeInterceptor(userService))
 			.setHandshakeHandler(new DefaultHandshakeHandler() {
 				@Override
 				protected @Nullable Principal determineUser(

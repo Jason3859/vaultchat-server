@@ -8,7 +8,7 @@ public interface UserService extends GetUserService {
 
 	void addUser(User user);
 	void deleteUser(String uid);
-	void updateHeartBeat(String uid);
+	void setStatus(String uid, User.Status status);
 	User updateDisplayName(String uid, String displayName);
 
 	List<User> searchUsers(String fromUid, String searchQuery);

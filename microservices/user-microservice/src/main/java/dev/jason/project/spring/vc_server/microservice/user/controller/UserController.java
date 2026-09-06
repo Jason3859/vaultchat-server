@@ -33,11 +33,6 @@ public class UserController {
 	public void deleteUser(@RequestParam String uid) {
 		userService.deleteUser(uid);
 	}
-	
-	@PatchMapping("/heartbeat")
-	public void heartbeat(@RequestParam String uid) {
-		userService.updateHeartBeat(uid);
-	}
 
 	@PatchMapping("/update-displayname")
 	@ResponseStatus(HttpStatus.ACCEPTED)

@@ -1,6 +1,7 @@
 package dev.jason.project.spring.vc_server.ws;
 
-import dev.jason.project.spring.vc_server.core.service.GetUserService;
+import dev.jason.project.spring.vc_server.core.model.User;
+import dev.jason.project.spring.vc_server.core.service.UserService;
 import lombok.AllArgsConstructor;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
@@ -15,19 +16,16 @@ import java.util.Map;
 @AllArgsConstructor
 public class WebSocketHandshakeInterceptor implements HandshakeInterceptor {
 
-    private GetUserService getUserService;
+    private UserService userService;
 
     @Override
     public boolean beforeHandshake(
         @NonNull ServerHttpRequest request, @NonNull ServerHttpResponse response,
         @NonNull WebSocketHandler wsHandler, @NonNull Map<String, Object> attributes) {
 
-        String query = request.getURI().getQuery();
-        String uid = extractUid(query);
+        String uid = extractUidFromRequest(request);
 
-        if (uid == null || !getUserService.doesUserExist(uid)) {
-            return false;
-        }
+        if (uid == null || !userService.doesUserExist(uid)) return false;
 
         attributes.put("principal", (Principal) () -> uid);
         return true;
@@ -37,9 +35,14 @@ public class WebSocketHandshakeInterceptor implements HandshakeInterceptor {
     public void afterHandshake(
         @NonNull ServerHttpRequest request, @NonNull ServerHttpResponse response,
         @NonNull WebSocketHandler wsHandler, @Nullable Exception exception) {
+
+        String uid = extractUidFromRequest(request);
+        userService.setStatus(uid, User.Status.Online);
     }
 
-    private String extractUid(String query) {
+    private String extractUidFromRequest(ServerHttpRequest request) {
+        String query = request.getURI().getQuery();
+
         if (query == null) return null;
         for (String param : query.split("&")) {
             String[] pair = param.split("=");
