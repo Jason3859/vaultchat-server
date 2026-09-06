@@ -20,10 +20,10 @@ public class MessageQueueServiceImpl implements MessageQueueService {
 
     @Override
     public void addMessageToQueue(String uid, Message message) {
-        var entity = repository.findByUserId(uid);
+        var entity = repository.findByUserId(uid)
+            .orElseThrow(VcException.UserException.UserNotFoundException::new);
 
-        if (entity.isEmpty()) throw new VcException.UserException.UserNotFoundException();
-        entity.get().getQueuedMessages().add(message);
-        repository.save(entity.get());
+        entity.queuedMessages().add(message.id());
+        repository.save(entity);
     }
 }

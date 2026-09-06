@@ -28,12 +28,12 @@ public class ConnectionsServiceImpl implements ConnectionsService {
             throw new VcException.UserException.UserNotFoundException();
         }
 
-        if (entity1.get().getConnections().contains(uid2)) {
+        if (entity1.get().connections().contains(uid2)) {
             return;
         }
 
-        entity1.get().getConnections().add(uid2);
-        entity2.get().getConnections().add(uid1);
+        entity1.get().connections().add(uid2);
+        entity2.get().connections().add(uid1);
 
         repository.save(entity1.get());
         repository.save(entity2.get());
@@ -44,6 +44,6 @@ public class ConnectionsServiceImpl implements ConnectionsService {
         var entity = repository.findByUserId(uid);
 
         if (entity.isEmpty()) throw new VcException.UserException.UserNotFoundException();
-        return entity.get().getConnections();
+        return entity.get().connections();
     }
 }
