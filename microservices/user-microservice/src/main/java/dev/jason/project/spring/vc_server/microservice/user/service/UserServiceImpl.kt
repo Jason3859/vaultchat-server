@@ -55,4 +55,8 @@ class UserServiceImpl(
             .map { it.asUser() }
             .toList()
     }
+
+    init {
+        repository.setAllUsersOffline()
+    }
 }
