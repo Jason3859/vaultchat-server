@@ -21,10 +21,9 @@ public class DeleteDeviceServiceImpl implements DeleteDeviceService {
 
     @Override
     public void deleteDevice(Device device) {
-        var entities = deviceRepository.findByOwnerUid(device.ownerUid());
+        DeviceEntity entity = deviceRepository.findByOwnerUidAndName(device.ownerUid(), device.name());
 
-        DeviceEntity entity = DeviceEntity.asEntity(device);
-        if (entities.contains(entity)) {
+        if (entity != null) {
             deviceRepository.delete(entity);
             return;
         }

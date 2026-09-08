@@ -29,7 +29,7 @@ class DeviceServiceImpl(
     }
 
     override fun markDeviceForLogout(device: Device, clearMessages: Boolean) {
-        val entity = deviceRepository.findById(device.token)
+        val entity = deviceRepository.findById(device.id)
             .orElseThrow { VcException.DeviceException.DeviceNotFoundException() }
 
         @Suppress("UsePropertyAccessSyntax") // having issues with lombok. that's why.

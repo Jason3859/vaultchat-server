@@ -29,7 +29,7 @@ public class UserEntity {
     public static UserEntity asEntity(User user) {
         return new UserEntity(user.uid(),
             user.displayName(),
-            user.profilePictureUrl().replace("=s96-c", ""),
+            user.profilePictureUrl(),
             user.status());
     }
 
