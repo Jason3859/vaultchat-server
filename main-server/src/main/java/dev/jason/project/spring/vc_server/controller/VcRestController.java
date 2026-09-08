@@ -1,5 +1,6 @@
 package dev.jason.project.spring.vc_server.controller;
 
+import dev.jason.project.spring.vc_server.core.exception.VcException;
 import dev.jason.project.spring.vc_server.dto.RegisterUserDto;
 import dev.jason.project.spring.vc_server.microservice.device.controller.DeviceController;
 import dev.jason.project.spring.vc_server.microservice.social.controller.SocialController;
@@ -21,12 +22,18 @@ public class VcRestController {
 		return "Hello, World!";
 	}
 	
-	@PostMapping("register-user")
+	@PostMapping("register")
 	@ResponseStatus(HttpStatus.CREATED)
 	public RegisterUserDto registerUser(@RequestBody RegisterUserDto dto) {
-        userController.register(dto.asUserDto());
-        deviceController.addDevice(dto.asDeviceDto());
-		socialController.register(dto.uid());
+
+		try {
+			userController.register(dto.asUserDto());
+			socialController.register(dto.uid());
+		} catch (VcException.UserException.UserAlreadyExistsException _) {
+			// ignore this and continue adding the new device to db
+		}
+
+		deviceController.addDevice(dto.asDeviceDto());
 		return dto;
 	}
 }
