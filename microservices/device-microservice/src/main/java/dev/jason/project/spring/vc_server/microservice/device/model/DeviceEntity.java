@@ -42,6 +42,10 @@ public class DeviceEntity {
 		);
 	}
 
+	public void setLastUsed(LocalDateTime lastUsed) {
+		this.lastUsed = lastUsed;
+	}
+
 	public void setLogoutMark(LogoutMark logoutMark) {
 		this.logoutMark = logoutMark;
 	}

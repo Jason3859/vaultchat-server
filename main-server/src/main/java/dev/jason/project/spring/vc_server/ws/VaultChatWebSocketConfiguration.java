@@ -1,5 +1,6 @@
 package dev.jason.project.spring.vc_server.ws;
 
+import dev.jason.project.spring.vc_server.core.service.DeviceService;
 import dev.jason.project.spring.vc_server.core.service.UserService;
 import lombok.AllArgsConstructor;
 import org.jspecify.annotations.NonNull;
@@ -19,14 +20,15 @@ import java.util.Map;
 @Configuration
 @EnableWebSocketMessageBroker
 @AllArgsConstructor
-public class MessagingWebSocketConfiguration implements WebSocketMessageBrokerConfigurer {
+public class VaultChatWebSocketConfiguration implements WebSocketMessageBrokerConfigurer {
 
 	private UserService userService;
+	private DeviceService deviceService;
 
 	@Override
 	public void registerStompEndpoints(@NonNull StompEndpointRegistry registry) {
 		registry.addEndpoint("/ws")
-			.addInterceptors(new WebSocketHandshakeInterceptor(userService))
+			.addInterceptors(new WebSocketHandshakeInterceptor(userService, deviceService))
 			.setHandshakeHandler(new DefaultHandshakeHandler() {
 				@Override
 				protected @Nullable Principal determineUser(

@@ -7,6 +7,7 @@ import dev.jason.project.spring.vc_server.core.service.*
 import dev.jason.project.spring.vc_server.microservice.device.model.DeviceEntity
 import dev.jason.project.spring.vc_server.microservice.device.repo.DeviceRepository
 import org.springframework.stereotype.Service
+import java.time.LocalDateTime
 
 @Service
 class DeviceServiceImpl(
@@ -26,6 +27,19 @@ class DeviceServiceImpl(
         if (devices.contains(entity)) throw DeviceAlreadyExistsException()
         deviceRepository.save(entity)
         return entity.asDevice()
+    }
+
+    override fun doesDeviceExist(deviceId: String): Boolean {
+        return deviceRepository.findById(deviceId).isPresent
+    }
+
+    override fun updateLastUsed(deviceId: String, lastUsed: LocalDateTime) {
+        val entity = deviceRepository.findById(deviceId)
+            .orElseThrow { VcException.DeviceException.DeviceNotFoundException() }
+
+        @Suppress("UsePropertyAccessSyntax")
+        entity.setLastUsed(lastUsed)
+        deviceRepository.save(entity)
     }
 
     override fun markDeviceForLogout(device: Device, clearMessages: Boolean) {
