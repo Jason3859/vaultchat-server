@@ -42,14 +42,6 @@ public class DeviceEntity {
 		);
 	}
 
-	public void setLastUsed(LocalDateTime lastUsed) {
-		this.lastUsed = lastUsed;
-	}
-
-	public void setLogoutMark(LogoutMark logoutMark) {
-		this.logoutMark = logoutMark;
-	}
-
 	@Override
 	public boolean equals(Object obj) {
 		if (!(obj instanceof DeviceEntity other)) return false;

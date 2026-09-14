@@ -3,7 +3,8 @@ package dev.jason.project.spring.vc_server.microservice.user.controller;
 import dev.jason.project.spring.vc_server.core.dto.UserDto;
 import dev.jason.project.spring.vc_server.core.model.User;
 import dev.jason.project.spring.vc_server.core.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,11 +12,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@AllArgsConstructor
 @RequestMapping("/user")
 public class UserController {
 	
-	@Autowired
-	private UserService userService;
+	private final UserService userService;
 
     @GetMapping
     public String home() {
@@ -49,7 +50,7 @@ public class UserController {
 		
 		userService.getUserByUid(fromUid); // for verification that user exists
 		
-		List<UserDto> requiredUsers = userService.searchUsers(fromUid, searchQuery)
+		List<UserDto> requiredUsers = userService.getAllUsersByDisplayName(fromUid, searchQuery)
 			.stream()
 			.map(UserDto::fromUser)
 			.toList();

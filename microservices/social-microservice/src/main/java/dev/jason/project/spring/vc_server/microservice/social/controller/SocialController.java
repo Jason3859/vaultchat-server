@@ -1,9 +1,10 @@
 package dev.jason.project.spring.vc_server.microservice.social.controller;
 
 import dev.jason.project.spring.vc_server.core.dto.UserDto;
-import dev.jason.project.spring.vc_server.core.service.GetUserService;
 import dev.jason.project.spring.vc_server.core.service.SocialService;
-import org.springframework.beans.factory.annotation.Autowired;
+import dev.jason.project.spring.vc_server.core.service.UserService;
+import lombok.AllArgsConstructor;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,14 +12,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@AllArgsConstructor
 @RequestMapping("/social")
 public class SocialController {
 
-    @Autowired
-    private SocialService socialService;
-
-    @Autowired
-    private GetUserService getUserService;
+    private final SocialService socialService;
+    private final UserService userService;
 
     @GetMapping
     public String home() {
@@ -51,7 +50,7 @@ public class SocialController {
     @GetMapping("/connections")
     public ResponseEntity<List<UserDto>> connections(@RequestParam String uid) {
         List<UserDto> connections = socialService.getConnections(uid).stream()
-            .map(getUserService::getUserByUid)
+            .map(userService::getUserByUid)
             .map(UserDto::fromUser)
             .toList();
 
@@ -61,6 +60,7 @@ public class SocialController {
     @GetMapping("/blocked-users")
     public ResponseEntity<List<UserDto>> blockedUsers(@RequestParam String uid) {
         List<UserDto> blockedUsers = socialService.getBlockedUsers(uid).stream()
+            .map(userService::getUserByUid)
             .map(UserDto::fromUser)
             .toList();
 

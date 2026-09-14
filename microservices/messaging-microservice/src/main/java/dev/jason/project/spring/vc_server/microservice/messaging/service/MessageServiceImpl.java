@@ -1,8 +1,8 @@
 package dev.jason.project.spring.vc_server.microservice.messaging.service;
 
 import dev.jason.project.spring.vc_server.core.model.Message;
-import dev.jason.project.spring.vc_server.core.service.GetUserService;
 import dev.jason.project.spring.vc_server.core.service.MessageService;
+import dev.jason.project.spring.vc_server.core.service.UserService;
 import dev.jason.project.spring.vc_server.microservice.messaging.model.MessageEntity;
 import dev.jason.project.spring.vc_server.microservice.messaging.repo.MessageRepository;
 import lombok.AllArgsConstructor;
@@ -16,7 +16,7 @@ import java.util.List;
 public class MessageServiceImpl implements MessageService {
 
     private final MessageRepository messageRepository;
-    private final GetUserService getUserService;
+    private final UserService userService;
 
     @Override
     public Message addMessage(Message message) {
@@ -26,7 +26,7 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public List<Message> getMessages(String uid) {
-        getUserService.getUserByUid(uid);
+        userService.getUserByUid(uid);
 
         var sent = messageRepository.findAllByFrom(uid);
         var received = messageRepository.findAllByTo(uid);
@@ -40,8 +40,8 @@ public class MessageServiceImpl implements MessageService {
     }
 
     private Message asMessage(MessageEntity entity) {
-        var from = getUserService.getUserByUid(entity.from());
-        var to = getUserService.getUserByUid(entity.to());
+        var from = userService.getUserByUid(entity.from());
+        var to = userService.getUserByUid(entity.to());
 
         return new Message(entity.id(), from, to, entity.text(), entity.timestamp());
     }

@@ -15,8 +15,6 @@ repositories {
 dependencies {
 	compileOnly libs.lombok
     annotationProcessor libs.lombok
-    
-    implementation libs.firebase.admin
 
     implementation libs.spring.boot.starter.webmvc
 

@@ -2,7 +2,6 @@ plugins {
     alias libs.plugins.java
     alias libs.plugins.spring.boot
     alias libs.plugins.spring.boot.dependency.management
-	id 'org.jetbrains.kotlin.jvm'
 }
 
 group = 'dev.jason.project'
@@ -17,10 +16,6 @@ dependencies {
 	implementation libs.spring.boot.starter.webmvc
 	implementation libs.spring.boot.starter.data.mongodb
 	implementation libs.spring.boot.starter.websocket
-	implementation libs.firebase.admin
-	implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
-	implementation platform("org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.8.0")
-	implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm"
 
     testImplementation libs.spring.boot.starter.webmvc.test
 	testRuntimeOnly libs.junit.platform.launcher
@@ -31,7 +26,4 @@ dependencies {
 
 tasks.named('test') {
 	useJUnitPlatform()
-}
-kotlin {
-	jvmToolchain(25)
 }

@@ -31,7 +31,7 @@ public class WebSocketHandshakeInterceptor implements HandshakeInterceptor {
         String uid = queryParams.get("uid");
         String deviceId = queryParams.get("device_id");
 
-        if (uid == null || !userService.doesUserExist(uid)) return false;
+        if (uid == null || userService.doesUserNotExist(uid)) return false;
         if (deviceId == null || !deviceService.doesDeviceExist(deviceId)) return false;
 
         attributes.put("principal", (Principal) () -> uid);

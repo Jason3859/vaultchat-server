@@ -3,11 +3,17 @@ package dev.jason.project.spring.vc_server.core.service;
 import dev.jason.project.spring.vc_server.core.model.Device;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
-public interface DeviceService extends GetDevicesService, DeleteDeviceService {
+public interface DeviceService {
+
+    List<Device> getDevicesByOwnerUid(String ownerUid);
 
     Device addDevice(Device device);
+    void deleteDevice(Device device);
+
     boolean doesDeviceExist(String deviceId);
+
     void updateLastUsed(String deviceId, LocalDateTime lastUsed);
     void markDeviceForLogout(Device device, boolean clearMessages);
 }
