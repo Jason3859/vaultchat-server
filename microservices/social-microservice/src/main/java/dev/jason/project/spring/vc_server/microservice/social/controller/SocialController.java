@@ -43,7 +43,7 @@ public class SocialController {
 
     @PatchMapping("/connect")
     public ResponseEntity<?> connect(@RequestParam("from_uid") String fromUid, @RequestParam("other_uid") String otherUid) {
-        socialService.connect(fromUid, otherUid);
+        socialService.tryConnect(fromUid, otherUid);
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 

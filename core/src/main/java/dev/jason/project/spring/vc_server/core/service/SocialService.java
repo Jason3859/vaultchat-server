@@ -8,7 +8,7 @@ public interface SocialService {
 	List<String> getConnections(String uid);
 	boolean isUserBlocked(String uid1, String uid2);
 
-	void connect(String uid1, String uid2);
+	void tryConnect(String uid1, String uid2);
 	void registerNewUser(String uid);
 	void block(String uid1, String uid2);
 	void unblock(String uid1, String uid2);

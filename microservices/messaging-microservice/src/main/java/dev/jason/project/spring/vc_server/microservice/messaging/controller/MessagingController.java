@@ -33,7 +33,7 @@ public class MessagingController {
         boolean isUserBlocked = socialService.isUserBlocked(messagePayload.from(), messagePayload.to());
         if (isUserBlocked) return;
 
-        // TODO: 14/09/2026 connect users if they are not connected
+        socialService.tryConnect(messagePayload.from(), messagePayload.to());
 
         Message message = messagesDatabaseService.addMessage(messagePayload.toMessage());
         MessageDto responseBody = MessageDto.fromMessage(message);

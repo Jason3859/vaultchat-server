@@ -38,23 +38,21 @@ public class SocialServiceImpl implements SocialService {
     }
 
     @Override
-    public void connect(String uid1, String uid2) {
-        var entity1 = repository.findByUserId(uid1);
-        var entity2 = repository.findByUserId(uid2);
+    public void tryConnect(String uid1, String uid2) {
+        Supplier<VcException> exceptionSupplier = VcException.UserException.UserNotFoundException::new;
 
-        if (entity1.isEmpty() || entity2.isEmpty()) {
-            throw new VcException.UserException.UserNotFoundException();
-        }
+        var entity1 = repository.findByUserId(uid1).orElseThrow(exceptionSupplier);
+        var entity2 = repository.findByUserId(uid2).orElseThrow(exceptionSupplier);
 
-        if (entity1.get().connections().contains(uid2)) {
+        if (entity1.connections().contains(uid2)) { // if they are already connected
             return;
         }
 
-        entity1.get().connections().add(uid2);
-        entity2.get().connections().add(uid1);
+        entity1.connections().add(uid2);
+        entity2.connections().add(uid1);
 
-        repository.save(entity1.get());
-        repository.save(entity2.get());
+        repository.save(entity1);
+        repository.save(entity2);
     }
 
     @Override
