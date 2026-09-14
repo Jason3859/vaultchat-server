@@ -2,7 +2,7 @@ package dev.jason.project.spring.vc_server.microservice.messaging.controller;
 
 import dev.jason.project.spring.vc_server.core.dto.MessageDto;
 import dev.jason.project.spring.vc_server.core.model.Message;
-import dev.jason.project.spring.vc_server.core.service.MessageService;
+import dev.jason.project.spring.vc_server.core.service.MessagesDatabaseService;
 import dev.jason.project.spring.vc_server.core.service.SocialService;
 import dev.jason.project.spring.vc_server.microservice.messaging.model.MessagePayload;
 import lombok.AllArgsConstructor;
@@ -25,7 +25,7 @@ public class MessagingController {
     private static final String TOPIC_MESSAGES = "/topic/messages";
 
     private final SocialService socialService;
-    private final MessageService messageService;
+    private final MessagesDatabaseService messagesDatabaseService;
     private final SimpMessagingTemplate messagingTemplate;
 
     @MessageMapping("/messaging.send")
@@ -33,7 +33,9 @@ public class MessagingController {
         boolean isUserBlocked = socialService.isUserBlocked(messagePayload.from(), messagePayload.to());
         if (isUserBlocked) return;
 
-        Message message = messageService.addMessage(messagePayload.toMessage());
+        // TODO: 14/09/2026 connect users if they are not connected
+
+        Message message = messagesDatabaseService.addMessage(messagePayload.toMessage());
         MessageDto responseBody = MessageDto.fromMessage(message);
 
         messagingTemplate.convertAndSendToUser(message.from().uid(), TOPIC_MESSAGES, responseBody);
@@ -43,7 +45,7 @@ public class MessagingController {
     @ResponseBody
     @GetMapping("/messages/fetch")
     public ResponseEntity<?> fetchMessages(@RequestParam String uid) {
-        List<Message> messages = messageService.getMessages(uid);
+        List<Message> messages = messagesDatabaseService.getMessages(uid);
         HttpStatus status;
 
         if (messages.isEmpty()) {

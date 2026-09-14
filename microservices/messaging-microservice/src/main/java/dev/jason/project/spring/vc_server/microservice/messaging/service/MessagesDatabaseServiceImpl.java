@@ -1,7 +1,7 @@
 package dev.jason.project.spring.vc_server.microservice.messaging.service;
 
 import dev.jason.project.spring.vc_server.core.model.Message;
-import dev.jason.project.spring.vc_server.core.service.MessageService;
+import dev.jason.project.spring.vc_server.core.service.MessagesDatabaseService;
 import dev.jason.project.spring.vc_server.core.service.UserService;
 import dev.jason.project.spring.vc_server.microservice.messaging.model.MessageEntity;
 import dev.jason.project.spring.vc_server.microservice.messaging.repo.MessageRepository;
@@ -13,7 +13,7 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-public class MessageServiceImpl implements MessageService {
+public class MessagesDatabaseServiceImpl implements MessagesDatabaseService {
 
     private final MessageRepository messageRepository;
     private final UserService userService;

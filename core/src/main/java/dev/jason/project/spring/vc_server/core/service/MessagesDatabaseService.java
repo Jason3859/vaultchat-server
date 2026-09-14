@@ -4,7 +4,7 @@ import dev.jason.project.spring.vc_server.core.model.Message;
 
 import java.util.List;
 
-public interface MessageService {
+public interface MessagesDatabaseService {
 
 	Message addMessage(Message message);
 	List<Message> getMessages(String uid);
