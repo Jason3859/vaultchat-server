@@ -13,6 +13,7 @@ public record RegisterUserDto(
     Device device
 ) {
 	public record Device(
+        String id,
 		String name,
 		Type type,
 		OS os,
@@ -24,6 +25,6 @@ public record RegisterUserDto(
 	}
 	
 	public DeviceDto asDeviceDto() {
-		return new DeviceDto(uid, device.name(), device.type(), device.os(), device.version());
+		return new DeviceDto(device.id(), uid, device.name(), device.type(), device.os(), device.version());
 	}
 }

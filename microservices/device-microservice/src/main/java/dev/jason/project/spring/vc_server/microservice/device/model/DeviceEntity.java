@@ -7,7 +7,6 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 @Document(collection = "device")
 @AllArgsConstructor
@@ -40,12 +39,5 @@ public class DeviceEntity {
 			device.lastUsed(),
 			new LogoutMark(false, false)
 		);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (!(obj instanceof DeviceEntity other)) return false;
-		return Objects.equals(this.ownerUid, other.ownerUid) &&
-			Objects.equals(this.name, other.name);
 	}
 }

@@ -3,15 +3,14 @@ package dev.jason.project.spring.vc_server.microservice.device.service;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import dev.jason.project.spring.vc_server.core.service.UserService;
 import org.springframework.stereotype.Service;
 
 import dev.jason.project.spring.vc_server.core.exception.VcException;
-import dev.jason.project.spring.vc_server.core.exception.VcException.DeviceException.DeviceAlreadyExistsException;
 import dev.jason.project.spring.vc_server.core.exception.VcException.DeviceException.DeviceNotFoundException;
 import dev.jason.project.spring.vc_server.core.exception.VcException.UserException.UserNotFoundException;
 import dev.jason.project.spring.vc_server.core.model.Device;
 import dev.jason.project.spring.vc_server.core.service.DeviceService;
+import dev.jason.project.spring.vc_server.core.service.UserService;
 import dev.jason.project.spring.vc_server.microservice.device.model.DeviceEntity;
 import dev.jason.project.spring.vc_server.microservice.device.model.DeviceEntity.LogoutMark;
 import dev.jason.project.spring.vc_server.microservice.device.repo.DeviceRepository;
@@ -29,13 +28,7 @@ public class DeviceServiceImpl implements DeviceService {
         if (userService.doesUserNotExist(device.ownerUid()))
             throw new UserNotFoundException();
 
-        List<DeviceEntity> devices = deviceRepository.findByOwnerUid(device.ownerUid());
         DeviceEntity entity = DeviceEntity.asEntity(device);
-
-        if (devices.contains(entity)) {
-            throw new DeviceAlreadyExistsException();
-        }
-
         return deviceRepository.save(entity).asDevice();
     }
 
