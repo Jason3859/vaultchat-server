@@ -1,14 +1,13 @@
 package dev.jason.project.spring.vc_server.microservice.user.repo;
 
-import dev.jason.project.spring.vc_server.microservice.user.model.UserEntity;
+import java.util.List;
+
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.data.mongodb.repository.Update;
-import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import dev.jason.project.spring.vc_server.microservice.user.model.UserEntity;
 
-@Repository
 public interface UserRepository extends MongoRepository<UserEntity, String> {
 
     List<UserEntity> findByDisplayNameContainingIgnoreCase(String displayName);
