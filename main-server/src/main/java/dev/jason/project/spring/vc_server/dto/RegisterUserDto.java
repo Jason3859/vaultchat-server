@@ -12,19 +12,27 @@ public record RegisterUserDto(
     String profilePictureUrl,
     Device device
 ) {
-	public record Device(
+    public record Device(
         String id,
-		String name,
-		Type type,
-		OS os,
-		String version
-	) {}
-	
-	public UserDto asUserDto() {
-		return new UserDto(uid, displayName, profilePictureUrl, Status.Online);
-	}
-	
-	public DeviceDto asDeviceDto() {
-		return new DeviceDto(device.id(), uid, device.name(), device.type(), device.os(), device.version());
-	}
+        String name,
+        Type type,
+        OS os,
+        String version
+    ) {
+    }
+
+    public UserDto asUserDto() {
+        return new UserDto(uid, displayName, profilePictureUrl, Status.Online);
+    }
+
+    public DeviceDto asDeviceDto() {
+        return new DeviceDto(device.id(), uid, device.name(), device.type(), device.os(), device.version());
+    }
+
+    public RegisterUserDto withDevice(DeviceDto device) {
+        return new RegisterUserDto(uid,
+            displayName,
+            profilePictureUrl,
+            new Device(device.id(), device.name(), device.type(), device.os(), device.version()));
+    }
 }

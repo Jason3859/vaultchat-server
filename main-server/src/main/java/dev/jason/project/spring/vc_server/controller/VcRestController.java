@@ -1,5 +1,6 @@
 package dev.jason.project.spring.vc_server.controller;
 
+import dev.jason.project.spring.vc_server.core.dto.DeviceDto;
 import dev.jason.project.spring.vc_server.core.exception.VcException;
 import dev.jason.project.spring.vc_server.dto.RegisterUserDto;
 import dev.jason.project.spring.vc_server.microservice.device.controller.DeviceController;
@@ -33,7 +34,10 @@ public class VcRestController {
 			// ignore this and continue adding the new device to db
 		}
 
-		deviceController.addDevice(dto.asDeviceDto());
-		return dto;
+		var response = deviceController.addDevice(dto.asDeviceDto());
+		var body = response.getBody();
+		var device = (DeviceDto) body;
+		assert device != null;
+        return dto.withDevice(device);
 	}
 }

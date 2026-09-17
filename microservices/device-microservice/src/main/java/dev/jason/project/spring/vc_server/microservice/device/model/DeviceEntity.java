@@ -3,6 +3,7 @@ package dev.jason.project.spring.vc_server.microservice.device.model;
 import dev.jason.project.spring.vc_server.core.model.Device;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -30,7 +31,7 @@ public class DeviceEntity {
 
 	public static DeviceEntity asEntity(Device device) {
 		return new DeviceEntity(
-			device.id(),
+			device.id() == null ? new ObjectId().toHexString() : device.id(),
 			device.ownerUid(),
 			device.name(),
 			device.type(),
