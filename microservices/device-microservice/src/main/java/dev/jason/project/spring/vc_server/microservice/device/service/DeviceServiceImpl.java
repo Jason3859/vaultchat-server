@@ -1,11 +1,5 @@
 package dev.jason.project.spring.vc_server.microservice.device.service;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
-import org.springframework.stereotype.Service;
-
-import dev.jason.project.spring.vc_server.core.exception.VcException;
 import dev.jason.project.spring.vc_server.core.exception.VcException.DeviceException.DeviceNotFoundException;
 import dev.jason.project.spring.vc_server.core.exception.VcException.UserException.UserNotFoundException;
 import dev.jason.project.spring.vc_server.core.model.Device;
@@ -15,6 +9,10 @@ import dev.jason.project.spring.vc_server.microservice.device.model.DeviceEntity
 import dev.jason.project.spring.vc_server.microservice.device.model.DeviceEntity.LogoutMark;
 import dev.jason.project.spring.vc_server.microservice.device.repo.DeviceRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -38,11 +36,11 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     @Override
-    public void markDeviceForLogout(Device device, boolean clearMessages) {
-        DeviceEntity entity = deviceRepository.findById(device.id())
+    public void markDeviceForLogout(String deviceId, boolean clearMessages) {
+        DeviceEntity entity = deviceRepository.findById(deviceId)
             .orElseThrow(DeviceNotFoundException::new);
 
-        LogoutMark logoutMark = new LogoutMark(true, clearMessages);
+        LogoutMark logoutMark = LogoutMark.getInstance(clearMessages);
         entity.setLogoutMark(logoutMark);
         deviceRepository.save(entity);
     }
@@ -65,14 +63,12 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     @Override
-    public void deleteDevice(Device device) {
-        DeviceEntity entity = deviceRepository.findByOwnerUidAndName(device.ownerUid(), device.name());
+    public void deleteDevice(String ownerUid, String id) {
+        DeviceEntity entity = deviceRepository.findById(id)
+            .orElseThrow(DeviceNotFoundException::new);
 
-        if (entity != null) {
+        if (ownerUid.equals(entity.getOwnerUid())) {
             deviceRepository.delete(entity);
-            return;
         }
-
-        throw new VcException.DeviceException.DeviceNotFoundException();
     }
 }

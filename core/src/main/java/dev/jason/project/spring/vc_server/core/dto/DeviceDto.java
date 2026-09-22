@@ -6,7 +6,6 @@ import java.time.LocalDateTime;
 
 public record DeviceDto(String id, String ownerUid, String name, Device.Type type, Device.OS os, String version) {
 
-    public Device toDevice() { return toDevice(null); }
     public Device toDevice(LocalDateTime lastTimeUsed) {
         return new Device(id, ownerUid, name, type, os, version, lastTimeUsed);
     }

@@ -31,9 +31,9 @@ public class DeviceController {
 	}
 	
 	@DeleteMapping("/delete")
-	public ResponseEntity<?> deleteDevice(@RequestBody DeviceDto device) {
-		deviceService.deleteDevice(device.toDevice());
-		return new ResponseEntity<>(device, HttpStatus.ACCEPTED);
+	@ResponseStatus(HttpStatus.ACCEPTED)
+	public void deleteDevice(@RequestParam String ownerUid, @RequestParam String deviceId) {
+		deviceService.deleteDevice(ownerUid, deviceId);
 	}
 	
 	@GetMapping("/mine")
@@ -48,13 +48,7 @@ public class DeviceController {
 
 	@DeleteMapping("/mark-logout")
 	@ResponseStatus(HttpStatus.ACCEPTED)
-	public void markDeviceForLogout(@RequestBody DeviceDto deviceDto, @RequestParam boolean clearMessages) {
-		deviceService.markDeviceForLogout(deviceDto.toDevice(), clearMessages);
-	}
-
-	@DeleteMapping("/logout")
-	@ResponseStatus(HttpStatus.ACCEPTED)
-	public void logoutDevice(@RequestBody DeviceDto deviceDto) {
-		deviceService.deleteDevice(deviceDto.toDevice());
+	public void markDeviceForLogout(@RequestParam String deviceId, @RequestParam boolean clearMessages) {
+		deviceService.markDeviceForLogout(deviceId, clearMessages);
 	}
 }

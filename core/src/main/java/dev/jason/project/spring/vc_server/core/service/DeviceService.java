@@ -10,10 +10,10 @@ public interface DeviceService {
     List<Device> getDevicesByOwnerUid(String ownerUid);
 
     Device addDevice(Device device);
-    void deleteDevice(Device device);
+    void deleteDevice(String ownerUid, String id);
 
     boolean doesDeviceExist(String deviceId);
 
     void updateLastUsed(String deviceId, LocalDateTime lastUsed);
-    void markDeviceForLogout(Device device, boolean clearMessages);
+    void markDeviceForLogout(String deviceId, boolean clearMessages);
 }
