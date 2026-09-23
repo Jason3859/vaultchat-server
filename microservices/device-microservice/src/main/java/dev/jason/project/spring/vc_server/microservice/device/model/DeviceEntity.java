@@ -3,6 +3,7 @@ package dev.jason.project.spring.vc_server.microservice.device.model;
 import dev.jason.project.spring.vc_server.core.model.Device;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.ToString;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
@@ -43,6 +44,7 @@ public class DeviceEntity {
 	}
 
     @ToString
+    @Getter
     public static final class LogoutMark {
 
         private static final LogoutMark LOGOUT_MARK_CLEAR_MESSAGES = new LogoutMark(true, true);

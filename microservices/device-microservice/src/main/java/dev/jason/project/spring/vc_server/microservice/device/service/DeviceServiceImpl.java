@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @AllArgsConstructor
@@ -70,5 +71,13 @@ public class DeviceServiceImpl implements DeviceService {
         if (ownerUid.equals(entity.getOwnerUid())) {
             deviceRepository.delete(entity);
         }
+    }
+
+    @Override
+    public List<Map<String, String>> getDevicesMarkedForLogout(String ownerUid) {
+        return deviceRepository.findByOwnerUidAndLogoutMarkIsMarkedTrue(ownerUid)
+            .stream()
+            .map(entity -> Map.of("device_id", entity.getId(), "clear_messages", String.valueOf(entity.getLogoutMark().isClearMessages())))
+            .toList();
     }
 }

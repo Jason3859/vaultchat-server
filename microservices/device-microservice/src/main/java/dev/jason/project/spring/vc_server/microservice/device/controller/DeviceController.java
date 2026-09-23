@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/device")
@@ -45,6 +46,11 @@ public class DeviceController {
 		
 		return new ResponseEntity<>(devices, HttpStatus.OK);
 	}
+
+    @GetMapping("/marked-for-logout")
+    public List<Map<String, String>> devicesMarkedForLogout(@RequestParam String uid) {
+        return deviceService.getDevicesMarkedForLogout(uid);
+    }
 
 	@DeleteMapping("/mark-logout")
 	@ResponseStatus(HttpStatus.ACCEPTED)
