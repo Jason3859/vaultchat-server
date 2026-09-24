@@ -59,6 +59,7 @@ public class DeviceServiceImpl implements DeviceService {
     public List<Device> getDevicesByOwnerUid(String ownerUid) {
         List<DeviceEntity> devices = deviceRepository.findByOwnerUid(ownerUid);
         return devices.stream()
+            .filter(entity -> !entity.getLogoutMark().isMarked())
             .map(DeviceEntity::asDevice)
             .toList();
     }
