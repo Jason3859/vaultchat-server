@@ -37,13 +37,13 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     @Override
-    public void markDeviceForLogout(String deviceId, boolean clearMessages) {
+    public Device markDeviceForLogout(String deviceId, boolean clearMessages) {
         DeviceEntity entity = deviceRepository.findById(deviceId)
             .orElseThrow(DeviceNotFoundException::new);
 
         LogoutMark logoutMark = LogoutMark.getInstance(clearMessages);
         entity.setLogoutMark(logoutMark);
-        deviceRepository.save(entity);
+        return deviceRepository.save(entity).asDevice();
     }
 
     @Override

@@ -17,5 +17,5 @@ public interface DeviceService {
     boolean doesDeviceExist(String deviceId);
 
     void updateLastUsed(String deviceId, LocalDateTime lastUsed);
-    void markDeviceForLogout(String deviceId, boolean clearMessages);
+    Device markDeviceForLogout(String deviceId, boolean clearMessages);
 }
