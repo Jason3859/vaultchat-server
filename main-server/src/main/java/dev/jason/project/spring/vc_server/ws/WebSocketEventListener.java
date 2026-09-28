@@ -50,11 +50,8 @@ public class WebSocketEventListener {
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(event.getMessage());
         Map<String, Object> attributes = accessor.getSessionAttributes();
 
-        if (attributes != null) {
-            Principal principal = (Principal) attributes.get("principal");
-            return principal.getName();
-        }
-        return null;
+        Principal principal = (Principal) attributes.get("principal");
+		return principal.getName();
     }
 
     private Map<String, Object> createPayload(String uid, User.Status status) {
