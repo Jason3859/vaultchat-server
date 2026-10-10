@@ -1,6 +1,7 @@
 package dev.jason.project.spring.vc_server.ws;
 
 import dev.jason.project.spring.vc_server.core.model.User;
+import dev.jason.project.spring.vc_server.core.service.SocialService;
 import dev.jason.project.spring.vc_server.core.service.UserService;
 import jakarta.annotation.Nullable;
 import lombok.AllArgsConstructor;
@@ -25,6 +26,7 @@ public class WebSocketEventListener {
     private static final String TOPIC_CONNECTIONS_STATUS = "/topic/connections-status";
 
     private final UserService userService;
+    private final SocialService socialService;
     private final SimpMessagingTemplate simpMessagingTemplate;
 
     @EventListener
@@ -33,7 +35,12 @@ public class WebSocketEventListener {
         if (uid == null) throw new IllegalStateException();
 
         userService.setStatus(uid, Online);
-        simpMessagingTemplate.convertAndSendToUser(uid, TOPIC_CONNECTIONS_STATUS, createPayload(uid, Online));
+
+        socialService.getConnections(uid)
+        	.stream()
+        	.forEach(connectionUid -> {
+        		simpMessagingTemplate.convertAndSendToUser(connectionUid, TOPIC_CONNECTIONS_STATUS, createPayload(uid, Online));
+        	});
     }
 
     @EventListener
@@ -42,7 +49,11 @@ public class WebSocketEventListener {
         if (uid == null) throw new IllegalStateException();
 
         userService.setStatus(uid, Offline);
-        simpMessagingTemplate.convertAndSendToUser(uid, TOPIC_CONNECTIONS_STATUS, createPayload(uid, Offline));
+        socialService.getConnections(uid)
+        	.stream()
+        	.forEach(connectionUid -> {
+        		simpMessagingTemplate.convertAndSendToUser(connectionUid, TOPIC_CONNECTIONS_STATUS, createPayload(uid, Offline));
+        	});
     }
 
     @Nullable
