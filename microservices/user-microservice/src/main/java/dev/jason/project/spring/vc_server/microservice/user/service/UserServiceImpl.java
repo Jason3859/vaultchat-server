@@ -8,6 +8,7 @@ import dev.jason.project.spring.vc_server.microservice.user.model.UserEntity;
 import dev.jason.project.spring.vc_server.microservice.user.repo.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,7 +28,7 @@ public class UserServiceImpl implements UserService {
         if (optionalUserEntity.isPresent())
             throw new VcException.UserException.UserAlreadyExistsException();
 
-        repository.save(UserEntity.asEntity(user));
+        repository.save(UserEntity.asEntity(user, LocalDateTime.now()));
     }
 
     @Override
@@ -80,5 +81,12 @@ public class UserServiceImpl implements UserService {
         } catch (VcException.UserException.UserNotFoundException e) {
             return true;
         }
+    }
+    
+    @Override
+    public void updateLastSeenToNow(String uid) {
+    	UserEntity entity = repository.findById(uid).orElseThrow(UserNotFoundException::new);
+    	entity.setLastSeen(LocalDateTime.now());
+    	repository.save(entity);
     }
 }

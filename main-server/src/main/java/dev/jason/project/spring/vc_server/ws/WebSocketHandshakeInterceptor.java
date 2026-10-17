@@ -45,8 +45,10 @@ public class WebSocketHandshakeInterceptor implements HandshakeInterceptor {
         @NonNull WebSocketHandler wsHandler, @Nullable Exception exception) {
 
         Map<String, String> queryParams = getQueryParams(request);
+        String uid = queryParams.get("uid");
         String deviceId = queryParams.get("device_id");
 
+        userService.updateLastSeenToNow(uid);
         deviceService.updateLastUsed(deviceId, LocalDateTime.now());
     }
 
