@@ -1,10 +1,13 @@
 package dev.jason.project.spring.vc_server.core.model;
 
+import java.time.LocalDateTime;
+
 public record User(
     String uid,
     String displayName,
     String profilePictureUrl,
-    Status status
+    Status status,
+    LocalDateTime lastSeen
 ) {
     public enum Status {
         Online, Away, Offline

@@ -22,7 +22,7 @@ public class UserEntity {
     private LocalDateTime lastSeen;
 
     public User asUser() {
-        return new User(uid, displayName, profilePictureUrl, status);
+        return new User(uid, displayName, profilePictureUrl, status, lastSeen);
     }
 
     public static UserEntity asEntity(User user, LocalDateTime lastSeen) {

@@ -35,7 +35,7 @@ public class VcRestController {
     public RegisterUserDto registerUser(@RequestBody RegisterUserDto dto) {
 
         try {
-            userService.addUser(dto.asUserDto().asUser());
+            userService.addUser(dto.asUserDto().asNewUser());
             socialService.registerNewUser(dto.uid());
         } catch (VcException.UserException.UserAlreadyExistsException _) {
             // ignore this and continue adding the new device to db

@@ -10,8 +10,8 @@ public record MessagePayload(String from, String to, String text, String timesta
     public Message toMessage() {
         return new Message(
             null,
-            new User(from, null, null, null),
-            new User(to, null, null, null),
+            new User(from, null, null, null, null),
+            new User(to, null, null, null, null),
             text,
             LocalDateTime.parse(timestamp)
         );

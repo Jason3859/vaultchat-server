@@ -1,5 +1,7 @@
 package dev.jason.project.spring.vc_server.dto;
 
+import java.time.LocalDateTime;
+
 import dev.jason.project.spring.vc_server.core.dto.DeviceDto;
 import dev.jason.project.spring.vc_server.core.dto.UserDto;
 import dev.jason.project.spring.vc_server.core.model.Device.OS;
@@ -22,7 +24,7 @@ public record RegisterUserDto(
     }
 
     public UserDto asUserDto() {
-        return new UserDto(uid, displayName, profilePictureUrl, Status.Online);
+        return new UserDto(uid, displayName, profilePictureUrl, Status.Online, LocalDateTime.now());
     }
 
     public DeviceDto asDeviceDto() {
