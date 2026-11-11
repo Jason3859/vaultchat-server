@@ -84,9 +84,11 @@ public class UserServiceImpl implements UserService {
     }
     
     @Override
-    public void updateLastSeenToNow(String uid) {
+    public LocalDateTime updateLastSeenToNow(String uid) {
     	UserEntity entity = repository.findById(uid).orElseThrow(UserNotFoundException::new);
-    	entity.setLastSeen(LocalDateTime.now());
+    	LocalDateTime now = LocalDateTime.now();
+		entity.setLastSeen(now);
     	repository.save(entity);
+    	return now;
     }
 }

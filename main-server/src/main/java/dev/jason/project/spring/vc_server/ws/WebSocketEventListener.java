@@ -1,33 +1,34 @@
 package dev.jason.project.spring.vc_server.ws;
 
-import dev.jason.project.spring.vc_server.core.model.User;
-import dev.jason.project.spring.vc_server.core.service.SocialService;
-import dev.jason.project.spring.vc_server.core.service.UserService;
-import jakarta.annotation.Nullable;
-import lombok.AllArgsConstructor;
+import static dev.jason.project.spring.vc_server.core.model.User.Status.Offline;
+import static dev.jason.project.spring.vc_server.core.model.User.Status.Online;
+
+import java.security.Principal;
+import java.time.LocalDateTime;
+import java.util.Map;
+
 import org.springframework.context.event.EventListener;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.messaging.AbstractSubProtocolEvent;
 import org.springframework.web.socket.messaging.SessionConnectEvent;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 
-import java.security.Principal;
-import java.util.Map;
-
-import static dev.jason.project.spring.vc_server.core.model.User.Status.Offline;
-import static dev.jason.project.spring.vc_server.core.model.User.Status.Online;
+import dev.jason.project.spring.vc_server.core.model.User;
+import dev.jason.project.spring.vc_server.core.model.WsDestination;
+import dev.jason.project.spring.vc_server.core.service.SocialService;
+import dev.jason.project.spring.vc_server.core.service.UserService;
+import dev.jason.project.spring.vc_server.core.service.WebSocketMessagingService;
+import jakarta.annotation.Nullable;
+import lombok.AllArgsConstructor;
 
 @Component
 @AllArgsConstructor
 public class WebSocketEventListener {
 
-    private static final String TOPIC_CONNECTIONS_STATUS = "/topic/connections-status";
-
     private final UserService userService;
     private final SocialService socialService;
-    private final SimpMessagingTemplate simpMessagingTemplate;
+    private final WebSocketMessagingService webSocketMessagingService;
 
     @EventListener
     public void handleConnectEvent(SessionConnectEvent event) {
@@ -39,7 +40,7 @@ public class WebSocketEventListener {
         socialService.getConnections(uid)
         	.stream()
         	.forEach(connectionUid -> {
-        		simpMessagingTemplate.convertAndSendToUser(connectionUid, TOPIC_CONNECTIONS_STATUS, createPayload(uid, Online));
+        		webSocketMessagingService.send(WsDestination.TOPIC_CONNECTION_UPDATE, connectionUid, createPayload(uid, Online));
         	});
     }
 
@@ -52,7 +53,9 @@ public class WebSocketEventListener {
         socialService.getConnections(uid)
         	.stream()
         	.forEach(connectionUid -> {
-        		simpMessagingTemplate.convertAndSendToUser(connectionUid, TOPIC_CONNECTIONS_STATUS, createPayload(uid, Offline));
+        		LocalDateTime lastSeen = userService.updateLastSeenToNow(uid);
+        		webSocketMessagingService.send(WsDestination.TOPIC_CONNECTION_UPDATE, connectionUid, createPayload(uid, Offline));
+        		webSocketMessagingService.send(WsDestination.TOPIC_CONNECTION_LAST_SEEN, connectionUid, createPayload(uid, lastSeen));
         	});
     }
 
@@ -68,4 +71,8 @@ public class WebSocketEventListener {
     private Map<String, Object> createPayload(String uid, User.Status status) {
         return Map.of("uid", uid, "status", status);
     }
+    
+    private Map<String, Object> createPayload(String uid, LocalDateTime lastSeen) {
+		return Map.of("uid", uid, "lastSeen", lastSeen);
+	}
 }
